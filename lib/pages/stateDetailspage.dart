@@ -189,235 +189,308 @@ class _StatedetailspageState extends State<Statedetailspage> {
     final attractions = stateResponse!['attr_data'];
 
     return Scaffold(
-      appBar: AppBar(
-         backgroundColor: Color.fromARGB(41, 93, 93, 91),
-        iconTheme: IconThemeData(color: Colors.white),
-      ),
+      // appBar: AppBar(
+      //    backgroundColor: Color.fromARGB(41, 93, 93, 91),
+      //   iconTheme: IconThemeData(color: Colors.white),
+      // ),
       backgroundColor:
           Color.fromARGB(41, 93, 93, 91), // Example background color
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                margin: EdgeInsets.all(10),
-                // height: 300,
-                padding: EdgeInsets.only(top: 30, right: 20, left: 20),
-                decoration: BoxDecoration(
-                  // color: Color.fromARGB(
-                  //     30, 255, 255, 255), // Make container transparent
-                  borderRadius: BorderRadius.circular(15), // Rounded corners
-                  border: Border.all(
-                      color: const Color.fromARGB(255, 0, 0, 0),
-                      width: 1), // Border
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      stateInfo['state_name'] ?? 'Unknown State',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 10),
-                    ReadMoreText(
-                      stateInfo["state_info"],
-                      lessStyle: TextStyle(
-                          fontWeight: FontWeight.w600, color: Colors.red),
-                      moreStyle: TextStyle(
-                          fontWeight: FontWeight.w600, color: Colors.red),
-                      style: TextStyle(color: Colors.white, fontSize: 15),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "State capital",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 17,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Text(
-                          stateInfo?["state_capital"] ??
-                              'No information available',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 17,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          child: Image.asset(
-                            "assets/weather2.png",
-                            height: 30,
-                            width: 30,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Text(
-                          "Weather is not Display",
-                          style: TextStyle(color: Colors.white),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/un1.png'),
+                fit: BoxFit.cover,
               ),
-              Container(
-                margin: EdgeInsets.all(10),
-                padding: EdgeInsets.only(top: 30, right: 0, left: 30),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15), // Rounded corners
-                  border: Border.all(
-                      color: const Color.fromARGB(255, 0, 0, 0),
-                      width: 1), // Border
-                ),
-                child: Column(
-                  children: [
-                    Container(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        "Most attracted places",
-                        style: TextStyle(
+            ),
+          ),
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.all(5),
+                  // height: 300,
+                  padding: EdgeInsets.only(top: 30, right: 5, left: 35),
+                  // decoration: BoxDecoration(
+                  //   // color: Color.fromARGB(
+                  //   //     30, 255, 255, 255), // Make container transparent
+                  //   borderRadius: BorderRadius.circular(15), // Rounded corners
+                  //   border: Border.all(
+                  //       color: const Color.fromARGB(255, 0, 0, 0),
+                  //       width: 1), // Border
+                  // ),
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.3),
+                        border: Border.all(
+                          color: const Color.fromARGB(255, 80, 80, 80),
+                          style: BorderStyle.solid,
+                        ),
+                        borderRadius: BorderRadius.circular(25)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          stateInfo['state_name'] ?? 'Unknown State',
+                          style: GoogleFonts.montserrat(
+                            fontWeight: FontWeight.w500,
                             color: Colors.white,
                             fontSize: 25,
-                            fontWeight: FontWeight.w500),
-                      ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        ReadMoreText(
+                          stateInfo["state_info"],
+                          lessStyle: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF1EFEBB)),
+                          moreStyle: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF1EFEBB)),
+                          style: TextStyle(color: Colors.white, fontSize: 15),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            // Text(
+                            //   "State capital",
+                            //   style: TextStyle(
+                            //       color: Colors.white,
+                            //       fontSize: 17,
+                            //       fontWeight: FontWeight.w600),
+                            // ),
+                            Icon(
+                              Icons.location_on,
+                              color: Color(0xFF1EFEBB),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              stateInfo?["state_capital"] ??
+                                  'No information available',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              child: Image.asset(
+                                "assets/weather2.png",
+                                height: 30,
+                                width: 30,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              "Weather is not Display",
+                              style: TextStyle(color: Colors.white),
+                            )
+                          ],
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 10),
-                    // Swiper for attraction images
-                    SizedBox(
-                      height: 400, // Set the height for the swipe
-                      child: Swiper(
-                        itemCount: attractions.length,
-                        // layout: SwiperLayout.STACK,
-                        viewportFraction: 0.9,
-                        scale: 0.9,
-                        autoplay: true,
-                        autoplayDelay: 5000,
-                        // itemWidth: 350,
-                        itemBuilder: (context, index) {
-                          final attraction = attractions[index];
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.all(10),
+                  padding: EdgeInsets.only(top: 30, right: 0, left: 30),
+                  // decoration: BoxDecoration(
+                  //   borderRadius: BorderRadius.circular(15), // Rounded corners
+                  //   border: Border.all(
+                  //       color: const Color.fromARGB(255, 0, 0, 0),
+                  //       width: 1), // Border
+                  // ),
+                  child: Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          "Most attracted places",
+                          style: GoogleFonts.montserrat(
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF1EFEBB),
+                            fontSize: 25,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      // Swiper for attraction images
+                      SizedBox(
+                        height: 300, // Set the height for the swipe
+                        child: Swiper(
+                          itemCount: attractions.length,
+                          // layout: SwiperLayout.STACK,
+                          viewportFraction: 1,
+                          scale: 0.8,
+                          autoplay: true,
+                          autoplayDelay: 5000,
+                          // itemWidth: 350,
+                          itemBuilder: (context, index) {
+                            final attraction = attractions[index];
 
-                          return GestureDetector(
-                            onTap: () {
-                              // Print the attraction ID when the image is clicked
-                              print('Attraction ID: ${attraction['id']}');
-                            },
-                            child: Card(
-                              child: SizedBox(
-                                height:
-                                    300, // Adjust height to fit the image and the text
+                            return GestureDetector(
+                              onTap: () {
+                                // Print the attraction ID when the image is clicked
+                                print('Attraction ID: ${attraction['id']}');
+                              },
+                              child: Container(
+                                height: 300,
                                 width: 300,
-                                child: Stack(
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.3),
+                                  borderRadius: BorderRadius.circular(25),
+                                  border: Border.all(
+                                    color:
+                                        const Color.fromARGB(255, 80, 80, 80),
+                                    style: BorderStyle.solid,
+                                  ),
+                                ),
+                                child: Column(
                                   children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: Image.network(
-                                        attraction['cover_img'],
-                                        height:
-                                            400, // Match image height with the container
-                                        width: 300,
-                                        fit: BoxFit
-                                            .cover, // Adjust fit to cover the card
-                                        loadingBuilder:
-                                            (context, child, progress) {
-                                          return progress == null
-                                              ? child
-                                              : Center(
-                                                  child:
-                                                      CircularProgressIndicator());
-                                        },
-                                        errorBuilder:
-                                            (context, error, stackTrace) {
-                                          return Center(
-                                              child: Icon(Icons.error));
-                                        },
-                                      ),
-                                    ),
-                                    // Overlay for attraction name at the bottom of the image
-                                    // Positioned(
-                                    //   bottom: 0,
-                                    //   left: 0,
-                                    //   right: 100,
-                                    //   child: Container(
-                                    //     padding: EdgeInsets.all(20),
-                                    //     decoration: BoxDecoration(
-                                    //         color: Colors.black.withOpacity(
-                                    //             0.5), // Semi-transparent background
-                                    //         borderRadius:
-                                    //             BorderRadius.circular(10)),
-                                    //     child: Text(
-                                    //       attraction['name'] ??
-                                    //           'Unknown Place', // Display attraction name
-                                    //       style: TextStyle(
-                                    //         color: Colors.white,
-                                    //         fontSize: 16,
-                                    //         fontWeight: FontWeight.bold,
-                                    //       ),
-                                    //       textAlign: TextAlign.center,
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                    Positioned(
-                                      bottom: 10,
-                                      left: 10,
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8, vertical: 8),
-                                        decoration: BoxDecoration(
-                                          color: Colors.black.withOpacity(0.5),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                    SizedBox(
+                                      height: 200,
+                                      width: double.infinity,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(25),
+                                            topRight: Radius.circular(25)),
+                                        child: Image.network(
+                                          attraction['cover_img'],
+
+                                          fit: BoxFit
+                                              .cover, // Adjust fit to cover the card
+                                          loadingBuilder:
+                                              (context, child, progress) {
+                                            return progress == null
+                                                ? child
+                                                : Center(
+                                                    child:
+                                                        CircularProgressIndicator());
+                                          },
+                                          errorBuilder:
+                                              (context, error, stackTrace) {
+                                            return Center(
+                                                child: Icon(Icons.error));
+                                          },
                                         ),
-                                        child: Row(
-                                          children: [
-                                            const Icon(Icons.location_pin,
-                                                color: Colors.white),
-                                            Text(
+                                      ),
+                                      // Overlay for attraction name at the bottom of the image
+                                      // Positioned(
+                                      //   bottom: 0,
+                                      //   left: 0,
+                                      //   right: 100,
+                                      //   child: Container(
+                                      //     padding: EdgeInsets.all(20),
+                                      //     decoration: BoxDecoration(
+                                      //         color: Colors.black.withOpacity(
+                                      //             0.5), // Semi-transparent background
+                                      //         borderRadius:
+                                      //             BorderRadius.circular(10)),
+                                      //     child: Text(
+                                      //       attraction['name'] ??
+                                      //           'Unknown Place', // Display attraction name
+                                      //       style: TextStyle(
+                                      //         color: Colors.white,
+                                      //         fontSize: 16,
+                                      //         fontWeight: FontWeight.bold,
+                                      //       ),
+                                      //       textAlign: TextAlign.center,
+                                      //     ),
+                                      //   ),
+                                      // ),
+                                      // Positioned(
+                                      //   bottom: 10,
+                                      //   left: 10,
+                                      // child: Container(
+                                      //   padding: const EdgeInsets.symmetric(
+                                      //       horizontal: 8, vertical: 8),
+                                      //   decoration: BoxDecoration(
+                                      //     color:
+                                      //         Colors.black.withOpacity(0.5),
+                                      //     borderRadius:
+                                      //         BorderRadius.circular(10),
+                                      //   ),
+                                      //   child: Row(
+                                      //     children: [
+                                      //       const Icon(Icons.location_pin,
+                                      //           color: Colors.white),
+                                      //       Text(
+                                      //         attraction['name'] ??
+                                      //             'Unknown Place',
+                                      //         style: GoogleFonts.poppins(
+                                      //           color: Colors.white,
+                                      //           fontSize: 14,
+                                      //           fontWeight: FontWeight.w600,
+                                      //         ),
+                                      //       ),
+                                      //     ],
+                                      //   ),
+                                      // ),
+                                      // ),
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8, vertical: 8),
+                                      decoration: BoxDecoration(
+                                        color: Colors.black.withOpacity(0.5),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          const Icon(Icons.location_pin,
+                                              color: const Color(0xFF1EFEBB)),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Container(
+                                            width: 200,
+                                            child: Text(
                                               attraction['name'] ??
                                                   'Unknown Place',
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
                                               style: GoogleFonts.poppins(
                                                 color: Colors.white,
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
