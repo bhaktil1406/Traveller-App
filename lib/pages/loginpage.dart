@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tourist_app/pages/home.dart';
 import 'package:tourist_app/pages/Homepage2.dart';
 import 'package:tourist_app/pages/phoneregi.dart';
+import 'package:tourist_app/pages/register.dart';
 
 class loginpage extends StatefulWidget {
   @override
@@ -16,6 +18,7 @@ class _loginpageState extends State<loginpage> {
   TextEditingController pass = new TextEditingController();
   bool isLoadind = false;
   bool isLoadind2 = false;
+  final secondayColor = const Color(0xFF1EFEBB);
 
   Future<User?> loginUserWithEmailAndPassword(
       String email, String password, BuildContext context) async {
@@ -72,77 +75,79 @@ class _loginpageState extends State<loginpage> {
         children: [
           Container(
             child: Image.asset(
-              'assets/bc1.jpg',
+              'assets/bg3.jpeg',
             ),
           ),
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(colors: [
-                Color.fromARGB(141, 0, 0, 0),
-                Color.fromARGB(204, 0, 0, 0),
-                Color.fromARGB(255, 0, 0, 0),
+                Color.fromARGB(0, 0, 0, 0),
+                Color.fromARGB(105, 0, 0, 0),
+                Color.fromARGB(177, 0, 0, 0),
                 Color.fromARGB(255, 0, 0, 0)
               ], begin: Alignment.topRight, end: Alignment.bottomRight),
             ),
             child: Center(
               child: SingleChildScrollView(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Center(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Text(
-                          "Welcom back",
+                          "Login To Your Account",
                           style: GoogleFonts.aboreto(
                             textStyle: const TextStyle(
-                              fontSize: 50,
-                              color: Color(0xfffed0a9),
+                              fontSize: 25,
+                              color: Color(0xFF1EFEBB),
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 40),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 5),
+                          horizontal: 30, vertical: 5),
                       child: Container(
-                        height: 70,
+                        height: 60,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: const Color(0xfffed0a9)),
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: const Color(0xFF1EFEBB)),
                           color: Colors.black,
-                          boxShadow: [
-                            const BoxShadow(
-                              color: Color(0xfffed0a9),
-                              blurRadius: 7,
-                              offset: Offset.zero,
-                              blurStyle: BlurStyle.solid,
-                            ),
-                          ],
+                          // boxShadow: [
+                          //   const BoxShadow(
+                          //     color: Color(0xFF1EFEBB),
+                          //     blurRadius: 7,
+                          //     offset: Offset.zero,
+                          //     blurStyle: BlurStyle.solid,
+                          //   ),
+                          // ],
                         ),
-                        child: TextField(
-                          controller: email,
-                          style: const TextStyle(color: Color(0xfffed0a9)),
-                          decoration: InputDecoration(
-                            prefixIcon: const Icon(
-                              Icons.email,
-                              size: 25,
-                              color: Color(0xfffed0a9),
-                            ),
-                            labelText: "Email",
-                            labelStyle: GoogleFonts.afacad(
-                              textStyle: const TextStyle(
-                                color: Color(0xfffed0a9),
-                                fontWeight: FontWeight.normal,
-                                fontSize: 25,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          child: TextField(
+                            controller: email,
+                            style: const TextStyle(color: Color(0xFF1EFEBB)),
+                            decoration: InputDecoration(
+                              // prefixIcon: const Icon(
+                              //   Icons.email,
+                              //   size: 25,
+                              //   color: Color(0xFF1EFEBB),
+                              // ),
+                              labelText: "Email",
+                              labelStyle: GoogleFonts.afacad(
+                                textStyle: const TextStyle(
+                                  color: Color(0xFF1EFEBB),
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 20,
+                                ),
                               ),
+                              border: InputBorder.none,
+                              // hintText: "Enter your email",
+                              // hintStyle: TextStyle(color: Color(0xFF1EFEBB)),
                             ),
-                            border: InputBorder.none,
-                            // hintText: "Enter your email",
-                            // hintStyle: TextStyle(color: Color(0xfffed0a9)),
                           ),
                         ),
                       ),
@@ -150,44 +155,47 @@ class _loginpageState extends State<loginpage> {
                     const SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 5),
+                          horizontal: 30, vertical: 5),
                       child: Container(
-                        height: 70,
+                        height: 60,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: const Color(0xfffed0a9)),
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: const Color(0xFF1EFEBB)),
                           color: Colors.black,
-                          boxShadow: [
-                            const BoxShadow(
-                              color: Color(0xfffed0a9),
-                              blurRadius: 7,
-                              offset: Offset.zero,
-                              blurStyle: BlurStyle.solid,
-                            ),
-                          ],
+                          // boxShadow: [
+                          //   const BoxShadow(
+                          //     color: Color(0xFF1EFEBB),
+                          //     blurRadius: 7,
+                          //     offset: Offset.zero,
+                          //     blurStyle: BlurStyle.solid,
+                          //   ),
+                          // ],
                         ),
-                        child: TextField(
-                          controller: pass,
-                          style: const TextStyle(color: Color(0xfffed0a9)),
-                          decoration: InputDecoration(
-                            prefixIcon: const Icon(
-                              Icons.lock,
-                              size: 25,
-                              color: Color(0xfffed0a9),
-                            ),
-                            labelText: "Password",
-                            labelStyle: GoogleFonts.afacad(
-                              textStyle: const TextStyle(
-                                color: Color(0xfffed0a9),
-                                fontWeight: FontWeight.normal,
-                                fontSize: 25,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          child: TextField(
+                            controller: pass,
+                            style: const TextStyle(color: Color(0xFF1EFEBB)),
+                            decoration: InputDecoration(
+                              // prefixIcon: const Icon(
+                              //   Icons.lock,
+                              //   size: 25,
+                              //   color: Color(0xFF1EFEBB),
+                              // ),
+                              labelText: "Password",
+                              labelStyle: GoogleFonts.afacad(
+                                textStyle: const TextStyle(
+                                  color: Color(0xFF1EFEBB),
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 20,
+                                ),
                               ),
+                              border: InputBorder.none,
+                              // hintText: "Enter your password",
+                              // hintStyle: TextStyle(color: Color(0xFF1EFEBB)),
                             ),
-                            border: InputBorder.none,
-                            // hintText: "Enter your password",
-                            // hintStyle: TextStyle(color: Color(0xfffed0a9)),
+                            obscureText: true,
                           ),
-                          obscureText: true,
                         ),
                       ),
                     ),
@@ -195,27 +203,27 @@ class _loginpageState extends State<loginpage> {
                     Center(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 5),
+                            horizontal: 50, vertical: 5),
                         child: isLoadind2
                             ? CircularProgressIndicator(
-                                color: const Color(0xfffed0a9),
+                                color: const Color(0xFF1EFEBB),
                               )
                             : Container(
-                                height: 70,
+                                height: 60,
                                 width: double.infinity,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(50),
                                   border: Border.all(
-                                      color: const Color(0xfffed0a9)),
-                                  color: const Color(0xfffed0a9),
-                                  boxShadow: [
-                                    const BoxShadow(
-                                      color: Color(0xfffed0a9),
-                                      blurRadius: 7,
-                                      offset: Offset.zero,
-                                      blurStyle: BlurStyle.solid,
-                                    ),
-                                  ],
+                                      color: const Color(0xFF1EFEBB)),
+                                  color: const Color(0xFF1EFEBB),
+                                  // boxShadow: [
+                                  //   const BoxShadow(
+                                  //     color: Color(0xFF1EFEBB),
+                                  //     blurRadius: 7,
+                                  //     offset: Offset.zero,
+                                  //     blurStyle: BlurStyle.solid,
+                                  //   ),
+                                  // ],
                                 ),
                                 child: TextButton(
                                   onPressed: () async {
@@ -250,7 +258,7 @@ class _loginpageState extends State<loginpage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Divider(
-                        color: Color(0xfffed0a9),
+                        color: Color(0xFF1EFEBB),
                         thickness: 2,
                       ),
                     ),
@@ -262,7 +270,7 @@ class _loginpageState extends State<loginpage> {
                       children: [
                         isLoadind
                             ? const CircularProgressIndicator(
-                                color: Color(0xfffed0a9),
+                                color: Color(0xFF1EFEBB),
                               )
                             : GestureDetector(
                                 onTap: () async {
@@ -276,20 +284,20 @@ class _loginpageState extends State<loginpage> {
                                 },
                                 child: Container(
                                   height: 50,
-                                  width: 150,
+                                  width: 50,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
                                     border: Border.all(
-                                        color: const Color(0xfffed0a9)),
+                                        color: const Color(0xFF1EFEBB)),
                                     color: Colors.black,
-                                    boxShadow: [
-                                      const BoxShadow(
-                                        color: Color(0xfffed0a9),
-                                        blurRadius: 7,
-                                        offset: Offset.zero,
-                                        blurStyle: BlurStyle.solid,
-                                      ),
-                                    ],
+                                    // boxShadow: [
+                                    //   const BoxShadow(
+                                    //     color: Color(0xFF1EFEBB),
+                                    //     blurRadius: 7,
+                                    //     offset: Offset.zero,
+                                    //     blurStyle: BlurStyle.solid,
+                                    //   ),
+                                    // ],
                                   ),
                                   child: Row(
                                     children: [
@@ -299,56 +307,86 @@ class _loginpageState extends State<loginpage> {
                                           'assets/google.png',
                                         ),
                                       ),
-                                      Text(
-                                        "Google login",
-                                        style:
-                                            TextStyle(color: Color(0xfffed0a9)),
-                                      ),
+                                      // Text(
+                                      //   "Google login",
+                                      //   style:
+                                      //       TextStyle(color: Color(0xFF1EFEBB)),
+                                      // ),
                                     ],
                                   ),
                                 ),
                               ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const phoneregi()));
-                          },
-                          child: Container(
-                            height: 50,
-                            width: 150,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              border:
-                                  Border.all(color: const Color(0xfffed0a9)),
-                              color: Colors.black,
-                              boxShadow: [
-                                const BoxShadow(
-                                  color: Color(0xfffed0a9),
-                                  blurRadius: 7,
-                                  offset: Offset.zero,
-                                  blurStyle: BlurStyle.solid,
-                                ),
-                              ],
-                            ),
-                            child: Row(
-                              children: [
-                                const Padding(
-                                    padding: EdgeInsets.all(12.0),
-                                    child: Icon(
-                                      Icons.phone,
-                                      color: Color(0xfffed0a9),
-                                    )),
-                                Text(
-                                  "phone login",
-                                  style: TextStyle(color: Color(0xfffed0a9)),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        // GestureDetector(
+                        //   onTap: () {
+                        //     Navigator.push(
+                        //         context,
+                        //         MaterialPageRoute(
+                        //             builder: (context) => const phoneregi()));
+                        //   },
+                        //   child: Container(
+                        //     height: 50,
+                        //     width: 150,
+                        //     decoration: BoxDecoration(
+                        //       borderRadius: BorderRadius.circular(20),
+                        //       border:
+                        //           Border.all(color: const Color(0xFF1EFEBB)),
+                        //       color: Colors.black,
+                        //       boxShadow: [
+                        //         const BoxShadow(
+                        //           color: Color(0xFF1EFEBB),
+                        //           blurRadius: 7,
+                        //           offset: Offset.zero,
+                        //           blurStyle: BlurStyle.solid,
+                        //         ),
+                        //       ],
+                        //     ),
+                        //     child: Row(
+                        //       children: [
+                        //         const Padding(
+                        //             padding: EdgeInsets.all(12.0),
+                        //             child: Icon(
+                        //               Icons.phone,
+                        //               color: Color(0xFF1EFEBB),
+                        //             )),
+                        //         Text(
+                        //           "phone login",
+                        //           style: TextStyle(color: Color(0xFF1EFEBB)),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
                       ],
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Center(
+                      child: Container(
+                          child: RichText(
+                        text: TextSpan(
+                          children: <TextSpan>[
+                            const TextSpan(
+                                text: 'Do not have an account?',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 18)),
+                            TextSpan(
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: ((context) =>
+                                                register())));
+                                  },
+                                text: ' Register here',
+                                style: const TextStyle(
+                                    color: Color(0xFF1EFEBB),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      )),
                     ),
                   ],
                 ),

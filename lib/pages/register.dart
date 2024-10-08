@@ -99,24 +99,15 @@ class _registerState extends State<register> {
         children: [
           Container(
             child: Image.asset(
-              'assets/bc1.jpg',
+              'assets/bg3.jpeg',
             ),
           ),
-          // Container(
-          //   height: 200,
-          //   decoration: BoxDecoration(
-          //     gradient: const LinearGradient(colors: [
-          //       Color.fromARGB(255, 220, 94, 85),
-          //       Color.fromARGB(255, 172, 48, 226)
-          //     ], begin: Alignment.topRight, end: Alignment.bottomRight),
-          //   ),
-          // ),
           Container(
             decoration: BoxDecoration(
-              gradient: const LinearGradient(colors: [
-                Color.fromARGB(141, 0, 0, 0),
-                Color.fromARGB(174, 0, 0, 0),
-                Color.fromARGB(255, 0, 0, 0),
+              gradient: LinearGradient(colors: [
+                Color.fromARGB(0, 0, 0, 0),
+                Color.fromARGB(35, 0, 0, 0),
+                Color.fromARGB(102, 0, 0, 0),
                 Color.fromARGB(255, 0, 0, 0)
               ], begin: Alignment.topRight, end: Alignment.bottomRight),
             ),
@@ -132,8 +123,8 @@ class _registerState extends State<register> {
                           "LET'S GET STARTED",
                           style: GoogleFonts.aboreto(
                             textStyle: TextStyle(
-                              fontSize: 50,
-                              color: Color(0xfffed0a9),
+                              fontSize: 25,
+                              color: Color(0xFF1EFEBB),
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -143,42 +134,43 @@ class _registerState extends State<register> {
                     SizedBox(height: 30),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 5),
+                          horizontal: 30, vertical: 5),
                       child: Container(
-                        height: 70,
+                        height: 60,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: const Color(0xfffed0a9)),
-                          color: Colors.black,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color(0xfffed0a9),
-                              blurRadius: 7,
-                              offset: Offset.zero,
-                              blurStyle: BlurStyle.solid,
-                            ),
-                          ],
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: const Color(0xFF1EFEBB)),
+                          color: Colors.black.withOpacity(0.5),
+
+                          // boxShadow: [
+                          //   BoxShadow(
+                          //     color: Color(0xFF1EFEBB),
+                          //     blurRadius: 7,
+                          //     offset: Offset.zero,
+                          //     blurStyle: BlurStyle.solid,
+                          //   ),
+                          // ],
                         ),
                         child: TextField(
                           controller: name,
-                          style: TextStyle(color: Color(0xfffed0a9)),
+                          style: TextStyle(color: Color(0xFF1EFEBB)),
                           decoration: InputDecoration(
                             prefixIcon: Icon(
                               Icons.person,
-                              color: Color(0xfffed0a9),
-                              size: 25,
+                              color: Color(0xFF1EFEBB),
+                              size: 20,
                             ),
                             labelText: "Name",
                             labelStyle: GoogleFonts.afacad(
                               textStyle: TextStyle(
-                                color: Color(0xfffed0a9),
+                                color: Color(0xFF1EFEBB),
                                 fontWeight: FontWeight.normal,
-                                fontSize: 25,
+                                fontSize: 20,
                               ),
                             ),
                             border: InputBorder.none,
                             // hintText: "Enter your name",
-                            // hintStyle: TextStyle(color: Color(0xfffed0a9)),
+                            // hintStyle: TextStyle(color: Color(0xFF1EFEBB)),
                           ),
                         ),
                       ),
@@ -186,42 +178,42 @@ class _registerState extends State<register> {
                     SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 5),
+                          horizontal: 30, vertical: 5),
                       child: Container(
-                        height: 70,
+                        height: 60,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Color(0xfffed0a9)),
-                          color: Colors.black,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color(0xfffed0a9),
-                              blurRadius: 7,
-                              offset: Offset.zero,
-                              blurStyle: BlurStyle.solid,
-                            ),
-                          ],
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Color(0xFF1EFEBB)),
+                          color: Colors.black.withOpacity(0.5),
+                          // boxShadow: [
+                          //   BoxShadow(
+                          //     color: Color(0xFF1EFEBB),
+                          //     blurRadius: 7,
+                          //     offset: Offset.zero,
+                          //     blurStyle: BlurStyle.solid,
+                          //   ),
+                          // ],
                         ),
                         child: TextField(
                           controller: email,
-                          style: TextStyle(color: Color(0xfffed0a9)),
+                          style: TextStyle(color: Color(0xFF1EFEBB)),
                           decoration: InputDecoration(
                             prefixIcon: Icon(
                               Icons.email,
-                              size: 25,
-                              color: Color(0xfffed0a9),
+                              size: 20,
+                              color: Color(0xFF1EFEBB),
                             ),
                             labelText: "Email",
                             labelStyle: GoogleFonts.afacad(
                               textStyle: TextStyle(
-                                color: Color(0xfffed0a9),
+                                color: Color(0xFF1EFEBB),
                                 fontWeight: FontWeight.normal,
-                                fontSize: 25,
+                                fontSize: 20,
                               ),
                             ),
                             border: InputBorder.none,
                             // hintText: "Enter your email",
-                            // hintStyle: TextStyle(color: Color(0xfffed0a9)),
+                            // hintStyle: TextStyle(color: Color(0xFF1EFEBB)),
                           ),
                         ),
                       ),
@@ -229,42 +221,42 @@ class _registerState extends State<register> {
                     SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 5),
+                          horizontal: 30, vertical: 5),
                       child: Container(
-                        height: 70,
+                        height: 60,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Color(0xfffed0a9)),
-                          color: Colors.black,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color(0xfffed0a9),
-                              blurRadius: 7,
-                              offset: Offset.zero,
-                              blurStyle: BlurStyle.solid,
-                            ),
-                          ],
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Color(0xFF1EFEBB)),
+                          color: Colors.black.withOpacity(0.5),
+                          // boxShadow: [
+                          //   BoxShadow(
+                          //     color: Color(0xFF1EFEBB),
+                          //     blurRadius: 7,
+                          //     offset: Offset.zero,
+                          //     blurStyle: BlurStyle.solid,
+                          //   ),
+                          // ],
                         ),
                         child: TextField(
                           controller: pass,
-                          style: TextStyle(color: Color(0xfffed0a9)),
+                          style: TextStyle(color: Color(0xFF1EFEBB)),
                           decoration: InputDecoration(
                             prefixIcon: Icon(
                               Icons.lock,
-                              size: 25,
-                              color: Color(0xfffed0a9),
+                              size: 20,
+                              color: Color(0xFF1EFEBB),
                             ),
                             labelText: "Password",
                             labelStyle: GoogleFonts.afacad(
                               textStyle: TextStyle(
-                                color: Color(0xfffed0a9),
+                                color: Color(0xFF1EFEBB),
                                 fontWeight: FontWeight.normal,
-                                fontSize: 25,
+                                fontSize: 20,
                               ),
                             ),
                             border: InputBorder.none,
                             // hintText: "Enter your password",
-                            // hintStyle: TextStyle(color: Color(0xfffed0a9)),
+                            // hintStyle: TextStyle(color: Color(0xFF1EFEBB)),
                           ),
                           obscureText: true,
                         ),
@@ -274,26 +266,26 @@ class _registerState extends State<register> {
                     Center(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 5),
+                            horizontal: 30, vertical: 5),
                         child: isLoadind2
                             ? CircularProgressIndicator(
-                                color: const Color(0xfffed0a9),
+                                color: const Color(0xFF1EFEBB),
                               )
                             : Container(
-                                height: 70,
+                                height: 60,
                                 width: double.infinity,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(color: Color(0xfffed0a9)),
-                                  color: Color(0xfffed0a9),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Color(0xfffed0a9),
-                                      blurRadius: 7,
-                                      offset: Offset.zero,
-                                      blurStyle: BlurStyle.solid,
-                                    ),
-                                  ],
+                                  borderRadius: BorderRadius.circular(50),
+                                  border: Border.all(color: Color(0xFF1EFEBB)),
+                                  color: Color(0xFF1EFEBB),
+                                  // boxShadow: [
+                                  //   BoxShadow(
+                                  //     color: Color(0xFF1EFEBB),
+                                  //     blurRadius: 7,
+                                  //     offset: Offset.zero,
+                                  //     blurStyle: BlurStyle.solid,
+                                  //   ),
+                                  // ],
                                 ),
                                 child: TextButton(
                                   onPressed: () async {
@@ -328,7 +320,7 @@ class _registerState extends State<register> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Divider(
-                        color: Color(0xfffed0a9),
+                        color: Color(0xFF1EFEBB),
                         thickness: 2,
                       ),
                     ),
@@ -340,7 +332,7 @@ class _registerState extends State<register> {
                       children: [
                         isLoadind
                             ? CircularProgressIndicator(
-                                color: Color(0xfffed0a9),
+                                color: Color(0xFF1EFEBB),
                               )
                             : GestureDetector(
                                 onTap: () async {
@@ -354,20 +346,20 @@ class _registerState extends State<register> {
                                 },
                                 child: Container(
                                   height: 50,
-                                  width: 150,
+                                  width: 50,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
+                                    borderRadius: BorderRadius.circular(50),
                                     border:
-                                        Border.all(color: Color(0xfffed0a9)),
+                                        Border.all(color: Color(0xFF1EFEBB)),
                                     color: Colors.black,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Color(0xfffed0a9),
-                                        blurRadius: 7,
-                                        offset: Offset.zero,
-                                        blurStyle: BlurStyle.solid,
-                                      ),
-                                    ],
+                                    // boxShadow: [
+                                    //   BoxShadow(
+                                    //     color: Color(0xFF1EFEBB),
+                                    //     blurRadius: 7,
+                                    //     offset: Offset.zero,
+                                    //     blurStyle: BlurStyle.solid,
+                                    //   ),
+                                    // ],
                                   ),
                                   child: Row(
                                     children: [
@@ -377,54 +369,54 @@ class _registerState extends State<register> {
                                           'assets/google.png',
                                         ),
                                       ),
-                                      Text(
-                                        "Google login",
-                                        style:
-                                            TextStyle(color: Color(0xfffed0a9)),
-                                      ),
+                                      // Text(
+                                      //   "Google login",
+                                      //   style:
+                                      //       TextStyle(color: Color(0xFF1EFEBB)),
+                                      // ),
                                     ],
                                   ),
                                 ),
                               ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => phoneregi()));
-                          },
-                          child: Container(
-                            height: 50,
-                            width: 150,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(color: Color(0xfffed0a9)),
-                              color: Colors.black,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Color(0xfffed0a9),
-                                  blurRadius: 7,
-                                  offset: Offset.zero,
-                                  blurStyle: BlurStyle.solid,
-                                ),
-                              ],
-                            ),
-                            child: Row(
-                              children: [
-                                Padding(
-                                    padding: const EdgeInsets.all(12.0),
-                                    child: Icon(
-                                      Icons.phone,
-                                      color: Color(0xfffed0a9),
-                                    )),
-                                Text(
-                                  "phone login",
-                                  style: TextStyle(color: Color(0xfffed0a9)),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        // GestureDetector(
+                        //   onTap: () {
+                        //     Navigator.push(
+                        //         context,
+                        //         MaterialPageRoute(
+                        //             builder: (context) => phoneregi()));
+                        //   },
+                        //   child: Container(
+                        //     height: 50,
+                        //     width: 150,
+                        //     decoration: BoxDecoration(
+                        //       borderRadius: BorderRadius.circular(20),
+                        //       border: Border.all(color: Color(0xFF1EFEBB)),
+                        //       color: Colors.black,
+                        //       boxShadow: [
+                        //         BoxShadow(
+                        //           color: Color(0xFF1EFEBB),
+                        //           blurRadius: 7,
+                        //           offset: Offset.zero,
+                        //           blurStyle: BlurStyle.solid,
+                        //         ),
+                        //       ],
+                        //     ),
+                        //     child: Row(
+                        //       children: [
+                        //         Padding(
+                        //             padding: const EdgeInsets.all(12.0),
+                        //             child: Icon(
+                        //               Icons.phone,
+                        //               color: Color(0xFF1EFEBB),
+                        //             )),
+                        //         Text(
+                        //           "phone login",
+                        //           style: TextStyle(color: Color(0xFF1EFEBB)),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                     SizedBox(
@@ -450,7 +442,7 @@ class _registerState extends State<register> {
                                   },
                                 text: ' login here',
                                 style: const TextStyle(
-                                    color: Color(0xfffed0a9),
+                                    color: Color(0xFF1EFEBB),
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold)),
                           ],

@@ -7,6 +7,7 @@ import 'package:tourist_app/pages/loginpage.dart';
 import 'package:tourist_app/pages/phoneregi.dart';
 import 'package:tourist_app/pages/register.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:tourist_app/pages/search.dart';
 
 import 'pages/otp.dart';
 
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         'register': (context) => register(),
         'phoneregi': (context) => phoneregi(),
         'home': (context) => Homepage2(),
+        'search': (context) => SearchPage(),
         'otp': (context) => otp(),
         'loginpage': (context) => loginpage(),
         'chatbot': (context) => chatbot(),

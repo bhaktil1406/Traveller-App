@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ffi';
+import 'dart:ui';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
@@ -8,6 +9,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:tourist_app/pages/AttractionPage.dart';
+import 'package:tourist_app/pages/nagate.dart';
 import 'package:tourist_app/pages/stateDetailspage.dart';
 
 class Homepage2 extends StatefulWidget {
@@ -34,9 +37,17 @@ class _Homepage2State extends State<Homepage2> {
     {'name': 'Manali', 'imagePath': 'assets/singapore.jpg'},
   ];
 
+  int _selectedIndex = 0;
+
+  // Function to handle navigation bar tap
   void _onItemTapped(int index) {
     setState(() {
-      _pageIndex = index;
+      _selectedIndex = index;
+      if (_selectedIndex == 0) {
+        Navigator.pushReplacementNamed(context, 'home');
+      } else if (_selectedIndex == 1) {
+        Navigator.pushReplacementNamed(context, 'search');
+      }
     });
   }
 
@@ -104,36 +115,114 @@ class _Homepage2State extends State<Homepage2> {
     var safeArea = MediaQuery.of(context).padding.top;
 
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-                color: secondayColor,
+      backgroundColor: Color.fromARGB(255, 18, 17, 17),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Stack(
+          children: [
+            // This adds a shadow below the bar for a floating effect
+            Positioned(
+              bottom: 10,
+              left: 0,
+              right: 0,
+              child: Container(
+                height: 80,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.25),
+                      blurRadius: 20,
+                      spreadRadius: 5,
+                      offset: Offset(0, 5), // Position of the shadow
+                    )
+                  ],
+                ),
               ),
-              label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.search,
-                color: secondayColor,
+            ),
+            // Glassmorphism effect with blur and transparency
+            ClipRRect(
+              borderRadius: BorderRadius.circular(30.0),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(
+                    sigmaX: 15.0,
+                    sigmaY: 15.0), // Stronger blur for the glass effect
+                child: Container(
+                  height: 70,
+                  decoration: BoxDecoration(
+                    color: Colors.white
+                        .withOpacity(0.1), // Adjust the transparency here
+                    borderRadius: BorderRadius.circular(30.0),
+                    border: Border.all(
+                      color: Colors.white
+                          .withOpacity(0.2), // Border for the glassy look
+                      width: 1.5,
+                    ),
+                  ),
+                  child: BottomNavigationBar(
+                    type: BottomNavigationBarType.fixed,
+                    backgroundColor: Colors.transparent, // Set to transparent
+                    elevation: 0, // No shadow from the BottomNavigationBar
+                    items: const <BottomNavigationBarItem>[
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.home),
+                        label: 'Home',
+                        // backgroundColor: Color(0xFF1EFEBB) // No label
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.search),
+                        label: 'Search', // No label
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.chat),
+                        label: 'Chatbot', // No label
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.favorite),
+                        label: 'Likes', // No label
+                      ),
+                    ],
+                    currentIndex: _selectedIndex,
+                    selectedItemColor: Colors.white,
+                    unselectedItemColor: Colors.grey,
+                    onTap: _onItemTapped,
+                  ),
+                ),
               ),
-              label: 'Search'),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.favorite,
-                color: secondayColor,
-              ),
-              label: 'Like'),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.person,
-                color: secondayColor,
-              ),
-              label: 'Profile'),
-        ],
-        backgroundColor: Colors.black.withOpacity(0.3),
-        selectedItemColor: Colors.black,
+            ),
+          ],
+        ),
       ),
+
+      // bottomNavigationBar: BottomNavigationBar(
+      //   items: [
+      //     BottomNavigationBarItem(
+      //         icon: Icon(
+      //           Icons.home,
+      //           color: secondayColor,
+      //         ),
+      //         label: 'Home'),
+      //     BottomNavigationBarItem(
+      //         icon: Icon(
+      //           Icons.search,
+      //           color: secondayColor,
+      //         ),
+      //         label: 'Search'),
+      //     BottomNavigationBarItem(
+      //         icon: Icon(
+      //           Icons.favorite,
+      //           color: secondayColor,
+      //         ),
+      //         label: 'Like'),
+      //     BottomNavigationBarItem(
+      //         icon: Icon(
+      //           Icons.person,
+      //           color: secondayColor,
+      //         ),
+      //         label: 'Profile'),
+      //   ],
+      //   backgroundColor: Colors.black.withOpacity(0.3),
+      //   selectedItemColor: Colors.black,
+      // ),
       appBar: AppBar(
         backgroundColor: Colors.black,
         iconTheme: IconThemeData(color: Colors.white),
@@ -166,14 +255,14 @@ class _Homepage2State extends State<Homepage2> {
       body: Stack(
         children: [
           // Background image container
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/un1.png'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
+          // Container(
+          //   decoration: BoxDecoration(
+          //     image: DecorationImage(
+          //       image: AssetImage('assets/un1.png'),
+          //       fit: BoxFit.cover,
+          //     ),
+          //   ),
+          // ),
           // The rest of your content goes here
           SingleChildScrollView(
             child: Padding(
@@ -259,28 +348,28 @@ class _Homepage2State extends State<Homepage2> {
                   const SizedBox(height: 20),
                   _buildRecommendedSection(),
                   const SizedBox(height: 25),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child:
-                        Divider(color: const Color.fromARGB(255, 80, 80, 80)),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 30),
+                  //   child:
+                  //       Divider(color: const Color.fromARGB(255, 80, 80, 80)),
+                  // ),
                   const SizedBox(height: 20),
                   Container(
                     width: double.infinity,
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                     decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.3),
+                        //  color: Colors.black.withOpacity(0.3),
                         // border: Border.all(
                         //   color: const Color.fromARGB(255, 80, 80, 80),
                         //   style: BorderStyle.solid,
                         // ),
                         borderRadius: BorderRadius.circular(25)),
                     child: Text(
-                      'Top Destinations',
+                      'Top States',
                       style: GoogleFonts.montserrat(
-                        fontWeight: FontWeight.w500,
-                        color: secondayColor,
-                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 26,
                       ),
 
                       // style: TextStyle(
@@ -307,15 +396,15 @@ class _Homepage2State extends State<Homepage2> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildCategoryIcon('Camping', 'assets/m.svg'),
+          _buildCategoryIcon('Camping', 'assets/camping.svg'),
           SizedBox(width: 30),
-          _buildCategoryIcon('Religious', 'assets/m.svg'),
+          _buildCategoryIcon('Religious', 'assets/church (1).svg'),
           SizedBox(width: 30),
-          _buildCategoryIcon('Beaches', 'assets/m.svg'),
+          _buildCategoryIcon('Beaches', 'assets/sun (1).svg'),
           SizedBox(width: 30),
-          _buildCategoryIcon('Mountains', 'assets/m.svg'),
+          _buildCategoryIcon('Mountains', 'assets/mountain-snow.svg'),
           SizedBox(width: 30),
-          _buildCategoryIcon('Historical', 'assets/m.svg'),
+          _buildCategoryIcon('Historical', 'assets/castle (1).svg'),
         ],
       ),
     );
@@ -395,9 +484,9 @@ class _Homepage2State extends State<Homepage2> {
       children: [
         Container(
           width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
           decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.3),
+              // color: Colors.black.withOpacity(0.3),
               // border: Border.all(
               //   color: const Color.fromARGB(255, 80, 80, 80),
               //   style: BorderStyle.solid,
@@ -406,9 +495,9 @@ class _Homepage2State extends State<Homepage2> {
           child: Text(
             'Recommended',
             style: GoogleFonts.montserrat(
-              fontWeight: FontWeight.w500,
-              color: secondayColor,
-              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              fontSize: 26,
             ),
             // style: TextStyle(
             //   fontWeight: FontWeight.w400,
@@ -432,6 +521,7 @@ class _Homepage2State extends State<Homepage2> {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: _buildRecommendedCard(
+                        recommendedlist[index]['id'],
                         recommendedlist[index]['name'],
                         recommendedlist[index]['cover_img'],
                         recommendedlist[index]['state_name'],
@@ -491,7 +581,8 @@ class _Homepage2State extends State<Homepage2> {
   //   );
   // }
 
-  Widget _buildRecommendedCard(String name, String imagePath, String state) {
+  Widget _buildRecommendedCard(
+      int id, String name, String imagePath, String state) {
     return Container(
       height: 300,
       width: 300,
@@ -505,17 +596,28 @@ class _Homepage2State extends State<Homepage2> {
       ),
       child: Column(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(25),
-              topRight: Radius.circular(25),
-            ),
-            child: Image.network(
-              "${imagePath}", // Load image from URL
-              height: 200,
-              width: double.infinity,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) => Icon(Icons.error),
+          GestureDetector(
+            onTap: () {
+              //  // Navigate to AttractionPage and pass the ID
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AttractionPage(attrId: id),
+                ),
+              );
+            },
+            child: ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(25),
+                topRight: Radius.circular(25),
+              ),
+              child: Image.network(
+                "${imagePath}?w=300&h=-1&s=1", // Load image from URL
+                height: 200,
+                width: double.infinity,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Icon(Icons.error),
+              ),
             ),
           ),
           const SizedBox(height: 10),

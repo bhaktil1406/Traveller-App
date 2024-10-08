@@ -46,6 +46,7 @@ dependencies:
   flutter_svg: ^2.0.10+1
   card_swiper: ^3.0.1
   readmore: ^3.0.0
+  weather: ^3.1.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
