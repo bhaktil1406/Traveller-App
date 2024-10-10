@@ -7,6 +7,7 @@ import 'package:tourist_app/pages/home.dart';
 import 'package:tourist_app/pages/Homepage2.dart';
 import 'package:tourist_app/pages/phoneregi.dart';
 import 'package:tourist_app/pages/register.dart';
+import 'package:flutter/services.dart';
 
 class loginpage extends StatefulWidget {
   @override
@@ -23,26 +24,77 @@ class _loginpageState extends State<loginpage> {
   Future<User?> loginUserWithEmailAndPassword(
       String email, String password, BuildContext context) async {
     try {
+      // Attempt to sign in with email and password
       final cred = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      if (cred.user != null) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => Homepage2()),
-        );
-      }
       return cred.user;
     } on FirebaseAuthException catch (e11) {
-      if (e11.code == 'invalid-credential') {
+      // Handle Firebase-specific exceptions
+      if (e11.code == 'wrong-password' || e11.code == 'user-not-found') {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(
-          "Incorrect credentials",
-          style: TextStyle(color: Colors.red),
-        )));
+          content: Text(
+            "Incorrect email or password",
+            style: TextStyle(color: Colors.red),
+          ),
+        ));
+      } else if (e11.code == 'invalid-email') {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+            "Invalid email format",
+            style: TextStyle(color: Colors.red),
+          ),
+        ));
+      } else if (e11.code == 'invalid-credential') {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+            "Invalid credentials. Please try again.",
+            style: TextStyle(color: Colors.red),
+          ),
+        ));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+            "An error occurred: ${e11.message}",
+            style: TextStyle(color: Colors.red),
+          ),
+        ));
       }
-      print(e11);
+      print(e11); // For debugging purposes
+    } on PlatformException catch (e) {
+      // Handle platform-specific exceptions
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          "An unexpected error occurred: ${e.message}",
+          style: TextStyle(color: Colors.red),
+        ),
+      ));
+    } catch (e) {
+      // Handle any other exceptions that might occur
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          "An unexpected error occurred: $e",
+          style: TextStyle(color: Colors.red),
+        ),
+      ));
+      print(e); // For debugging purposes
     }
     return null;
+  }
+
+// Function to call login and navigate upon success
+  Future<void> si(BuildContext context, String email, String password) async {
+    final user = await loginUserWithEmailAndPassword(email, password, context);
+    if (user != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                Homepage2()), // Replace with your homepage widget
+      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Login successful"),
+      ));
+    }
   }
 
 // fon login with google
@@ -228,26 +280,24 @@ class _loginpageState extends State<loginpage> {
                                 child: TextButton(
                                   onPressed: () async {
                                     setState(() {
-                                      isLoadind2 = true;
+                                      isLoadind2 =
+                                          true; // Start loading when the button is pressed
                                     });
+
                                     try {
-                                      await loginUserWithEmailAndPassword(
-                                          email.text, pass.text, context);
+                                      // Call the login function and pass email, password, and context
+                                      await si(context, email.text, pass.text);
                                     } finally {
+                                      // Stop loading after the operation finishes (success or failure)
                                       setState(() {
                                         isLoadind2 = false;
                                       });
                                     }
                                   },
-                                  child: Text(
-                                    "Login",
-                                    style: GoogleFonts.lato(
-                                      textStyle: const TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w900),
-                                    ),
-                                  ),
+                                  child: isLoadind2
+                                      ? CircularProgressIndicator() // Show loader while processing
+                                      : Text(
+                                          "Login"), // Button text when not loading
                                 ),
                               ),
                       ),

@@ -10,8 +10,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:tourist_app/pages/AttractionPage.dart';
+import 'package:tourist_app/pages/auth.dart';
 import 'package:tourist_app/pages/nagate.dart';
 import 'package:tourist_app/pages/stateDetailspage.dart';
+import 'auth.dart'; // Import your auth service
 
 class Homepage2 extends StatefulWidget {
   const Homepage2({super.key});
@@ -28,15 +30,6 @@ class _Homepage2State extends State<Homepage2> {
   final primaryColor = const Color(0xFF02050A);
   final secondayColor = const Color(0xFF1EFEBB);
   final ternaryColor = const Color(0xFF1B1E23);
-
-  final List<Map<String, String>> destinations = [
-    {'name': 'Singapore', 'imagePath': 'assets/singapore.jpg'},
-    {'name': 'Taj Mahal', 'imagePath': 'assets/singapore.jpg'},
-    {'name': 'Lotus Temple', 'imagePath': 'assets/singapore.jpg'},
-    {'name': 'Goa Beach', 'imagePath': 'assets/singapore.jpg'},
-    {'name': 'Manali', 'imagePath': 'assets/singapore.jpg'},
-  ];
-
   int _selectedIndex = 0;
 
   // Function to handle navigation bar tap
@@ -101,12 +94,24 @@ class _Homepage2State extends State<Homepage2> {
     }
   }
 
+  String userName = 'Loading...';
+
+  void loadUserData() async {
+    auth authService = auth();
+    Map<String, String> userData = await authService.getUserData();
+
+    setState(() {
+      userName = userData['name'] ?? 'Guest';
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     apicall(); // Call the API during widget initialization
     fetchStateData();
     recommended();
+    loadUserData();
   }
 
   @override
@@ -287,7 +292,7 @@ class _Homepage2State extends State<Homepage2> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            // Navigate to user account page
+                            Navigator.pushNamed(context, "profile");
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -312,7 +317,7 @@ class _Homepage2State extends State<Homepage2> {
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    'Welcome Max',
+                    'Welcome, ${userName}',
                     style: GoogleFonts.montserrat(
                       fontWeight: FontWeight.w500,
                       color: Colors.white,
@@ -664,6 +669,19 @@ class _Homepage2State extends State<Homepage2> {
     );
   }
 
+  // Add this method in your _Homepage2State class
+  Widget buildVerticalLine() {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Container(
+        width: 2, // Thickness of the vertical line
+        height: double.infinity, // Full height of the grid item
+        color: const Color.fromARGB(255, 255, 250, 250)
+            .withOpacity(0.3), // Line color with some transparency
+      ),
+    );
+  }
+
   Widget _buildDestinationList() {
     // Check if the listResponse is null or empty
     if (listResponse == null || listResponse.isEmpty) {
@@ -674,137 +692,107 @@ class _Homepage2State extends State<Homepage2> {
       );
     }
 
-    return SizedBox(
-      height: 600,
-      child: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, // Number of items per row
-          crossAxisSpacing: 5, // Horizontal space between items
-          mainAxisSpacing: 5, // Vertical space between items
-          childAspectRatio: 1, // Ratio of width to height of grid items
-        ),
-        padding: const EdgeInsets.all(10),
-        itemCount: listResponse.length, // Number of items in the grid
-        itemBuilder: (context, index) {
-          // Ensure stateResponse is not null and contains 'state_data' and 'attr_data'
-          final stateInfo = stateResponse?['state_data'];
-          final attractions = stateResponse?['attr_data'];
+    return GridView.builder(
+      shrinkWrap: true, // Allows the GridView to take only necessary space
+      physics: NeverScrollableScrollPhysics(), // Disable its scrolling
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2, // Number of items per row
+        crossAxisSpacing: 5, // Horizontal space between items
+        mainAxisSpacing: 5, // Vertical space between items
+        childAspectRatio: 1, // Ratio of width to height of grid items
+      ),
+      padding: const EdgeInsets.all(10),
+      itemCount: listResponse.length, // Number of items in the grid
+      itemBuilder: (context, index) {
+        final stateInfo = stateResponse?['state_data'];
+        final attractions = stateResponse?['attr_data'];
 
-          // Check if attractions exist and have 'images', otherwise use a placeholder
-          String imageUrl = attractions != null &&
-                  attractions.containsKey('images')
-              ? attractions['images']
-              : ''; // Leave as an empty string to trigger CircularProgressIndicator
+        String imageUrl =
+            attractions != null && attractions.containsKey('images')
+                ? attractions['images']
+                : '';
 
-          // Check if index is an odd number to add an offset for the second item in the row
-          bool isSecondItem = (index % 2 != 0);
+        bool isSecondItem = (index % 2 != 0);
 
-          return Stack(
-            children: [
-              // Add a vertical line between grid columns
-              if (index % 2 == 1) Positioned.fill(child: buildVerticalLine()),
-
-              Transform.translate(
-                offset: isSecondItem
-                    ? Offset(0, 30)
-                    : Offset(0, 0), // Offset second item
-                child: GestureDetector(
-                  onTap: () {
-                    // Ensure 'stateid' is assigned before using it
-                    stateid = listResponse[index][0];
-                    print(stateid);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            Statedetailspage(stateid: stateid),
-                      ),
-                    );
-                  },
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 15),
-                        child: Stack(
-                          children: [
-                            // Container to display image or loading indicator
-                            Container(
-                              height: 120,
-                              width: double
-                                  .infinity, // Ensure it takes full available width
+        return Stack(
+          children: [
+            if (index % 2 == 1) Positioned.fill(child: buildVerticalLine()),
+            Transform.translate(
+              offset: isSecondItem ? Offset(0, 30) : Offset(0, 0),
+              child: GestureDetector(
+                onTap: () {
+                  stateid = listResponse[index][0];
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Statedetailspage(stateid: stateid),
+                    ),
+                  );
+                },
+                child: Column(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 15),
+                      child: Stack(
+                        children: [
+                          Container(
+                            height: 120,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.grey,
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.network(
+                                "${listResponse[index][2]}",
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 10,
+                            left: 10,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 8),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color:
-                                    Colors.grey, // Placeholder background color
+                                color: Colors.black.withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(25),
                               ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image.network(
-                                  "${listResponse[index][2]}",
-                                  fit: BoxFit.cover,
-                                ),
+                              child: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.location_pin,
+                                    color: Color(0xFF1EFEBB),
+                                    size: 10,
+                                  ),
+                                  Text(
+                                    listResponse[index][1],
+                                    style: GoogleFonts.poppins(
+                                      color: Colors.white,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            // Positioned widget for the state name and location pin icon
-                            Positioned(
-                              bottom: 10,
-                              left: 10,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 8),
-                                decoration: BoxDecoration(
-                                  color: Colors.black.withOpacity(0.3),
-                                  borderRadius: BorderRadius.circular(25),
-                                ),
-                                child: Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.location_pin,
-                                      color: Color(0xFF1EFEBB),
-                                      size: 10,
-                                    ),
-                                    Text(
-                                      listResponse[index][1],
-                                      style: GoogleFonts.poppins(
-                                        color: Colors.white,
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          );
-        },
-      ),
-    );
-  }
-
-// Function to build the vertical line
-  Widget buildVerticalLine() {
-    return Align(
-      alignment: Alignment.centerRight,
-      child: Container(
-        width: 2, // Thickness of the vertical line
-        height: double.infinity, // Full height of the grid item
-        color: const Color.fromARGB(255, 255, 250, 250)
-            .withOpacity(0.3), // Line color
-      ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
-
-
 
 
   // Widget _buildDestinationList() {

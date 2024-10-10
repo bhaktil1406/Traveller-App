@@ -377,6 +377,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:readmore/readmore.dart';
+import 'package:tourist_app/pages/auth.dart';
 import 'package:weather/weather.dart';
 
 class AttractionPage extends StatefulWidget {

@@ -5,6 +5,7 @@ import 'package:tourist_app/pages/home.dart';
 import 'package:tourist_app/pages/Homepage2.dart';
 import 'package:tourist_app/pages/loginpage.dart';
 import 'package:tourist_app/pages/phoneregi.dart';
+import 'package:tourist_app/pages/profilepage.dart';
 import 'package:tourist_app/pages/register.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:tourist_app/pages/search.dart';
@@ -20,7 +21,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     bool isLoggedIn = FirebaseAuth.instance.currentUser != null;
@@ -37,6 +37,7 @@ class MyApp extends StatelessWidget {
         'otp': (context) => otp(),
         'loginpage': (context) => loginpage(),
         'chatbot': (context) => chatbot(),
+        'profile': (context) => Profilepage(),
       },
     );
   }

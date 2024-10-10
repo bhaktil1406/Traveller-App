@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tourist_app/pages/auth.dart';
 import 'package:tourist_app/pages/home.dart';
 import 'package:tourist_app/pages/Homepage2.dart';
 import 'package:tourist_app/pages/loginpage.dart';
@@ -22,6 +24,7 @@ class _registerState extends State<register> {
   bool isLoadind = false;
   bool isLoadind2 = false;
   // Add the password validation function here
+
   bool validatePassword(String password) {
     String pattern =
         r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$';
@@ -89,6 +92,35 @@ class _registerState extends State<register> {
       print(e.toString());
     }
     return null;
+  }
+
+  Future<String?> getCurrentUserId() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    return user?.uid;
+  }
+
+  void SaveRegisterData() async {
+    try {
+      String? userId = await getCurrentUserId();
+      if (userId != null) {
+        Map<String, dynamic> data = {
+          'uid': userId,
+          'name': name.text,
+          'email': email.text,
+          'pass': pass.text,
+        };
+        await FirebaseFirestore.instance
+            .collection('user')
+            .doc(userId)
+            .set(data);
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("Data added")));
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Failed to add data: $e")),
+      );
+    }
   }
 
   @override
@@ -295,6 +327,7 @@ class _registerState extends State<register> {
                                     try {
                                       await createUserWithEmailAndPassword(
                                           email.text, pass.text, context);
+                                      SaveRegisterData();
                                     } finally {
                                       setState(() {
                                         isLoadind2 = false;
