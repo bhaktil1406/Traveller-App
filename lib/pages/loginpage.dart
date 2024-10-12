@@ -1,21 +1,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:tourist_app/pages/home.dart';
 import 'package:tourist_app/pages/Homepage2.dart';
-import 'package:tourist_app/pages/phoneregi.dart';
 import 'package:tourist_app/pages/register.dart';
+import 'package:flutter/services.dart';
 
 class loginpage extends StatefulWidget {
+  const loginpage({super.key});
+
   @override
   State<loginpage> createState() => _loginpageState();
 }
 
 class _loginpageState extends State<loginpage> {
-  TextEditingController email = new TextEditingController();
-  TextEditingController pass = new TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController pass = TextEditingController();
   bool isLoadind = false;
   bool isLoadind2 = false;
   final secondayColor = const Color(0xFF1EFEBB);
@@ -23,26 +23,77 @@ class _loginpageState extends State<loginpage> {
   Future<User?> loginUserWithEmailAndPassword(
       String email, String password, BuildContext context) async {
     try {
+      // Attempt to sign in with email and password
       final cred = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      if (cred.user != null) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => Homepage2()),
-        );
-      }
       return cred.user;
     } on FirebaseAuthException catch (e11) {
-      if (e11.code == 'invalid-credential') {
+      // Handle Firebase-specific exceptions
+      if (e11.code == 'wrong-password' || e11.code == 'user-not-found') {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+            "Incorrect email or password",
+            style: TextStyle(color: Colors.red),
+          ),
+        ));
+      } else if (e11.code == 'invalid-email') {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+            "Invalid email format",
+            style: TextStyle(color: Colors.red),
+          ),
+        ));
+      } else if (e11.code == 'invalid-credential') {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+            "Invalid credentials. Please try again.",
+            style: TextStyle(color: Colors.red),
+          ),
+        ));
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(
-          "Incorrect credentials",
-          style: TextStyle(color: Colors.red),
-        )));
+          content: Text(
+            "An error occurred: ${e11.message}",
+            style: const TextStyle(color: Colors.red),
+          ),
+        ));
       }
-      print(e11);
+      print(e11); // For debugging purposes
+    } on PlatformException catch (e) {
+      // Handle platform-specific exceptions
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          "An unexpected error occurred: ${e.message}",
+          style: const TextStyle(color: Colors.red),
+        ),
+      ));
+    } catch (e) {
+      // Handle any other exceptions that might occur
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          "An unexpected error occurred: $e",
+          style: const TextStyle(color: Colors.red),
+        ),
+      ));
+      print(e); // For debugging purposes
     }
     return null;
+  }
+
+// Function to call login and navigate upon success
+  Future<void> si(BuildContext context, String email, String password) async {
+    final user = await loginUserWithEmailAndPassword(email, password, context);
+    if (user != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                const Homepage2()), // Replace with your homepage widget
+      );
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Login successful"),
+      ));
+    }
   }
 
 // fon login with google
@@ -91,17 +142,15 @@ class _loginpageState extends State<loginpage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Center(
+                    const Center(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        padding: EdgeInsets.symmetric(horizontal: 20),
                         child: Text(
                           "Login To Your Account",
-                          style: GoogleFonts.aboreto(
-                            textStyle: const TextStyle(
-                              fontSize: 25,
-                              color: Color(0xFF1EFEBB),
-                              fontWeight: FontWeight.bold,
-                            ),
+                          style: TextStyle(
+                            fontSize: 25,
+                            color: Color(0xFF1EFEBB),
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
@@ -130,19 +179,17 @@ class _loginpageState extends State<loginpage> {
                           child: TextField(
                             controller: email,
                             style: const TextStyle(color: Color(0xFF1EFEBB)),
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               // prefixIcon: const Icon(
                               //   Icons.email,
                               //   size: 25,
                               //   color: Color(0xFF1EFEBB),
                               // ),
                               labelText: "Email",
-                              labelStyle: GoogleFonts.afacad(
-                                textStyle: const TextStyle(
-                                  color: Color(0xFF1EFEBB),
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 20,
-                                ),
+                              labelStyle: TextStyle(
+                                color: Color(0xFF1EFEBB),
+                                fontWeight: FontWeight.normal,
+                                fontSize: 20,
                               ),
                               border: InputBorder.none,
                               // hintText: "Enter your email",
@@ -176,19 +223,17 @@ class _loginpageState extends State<loginpage> {
                           child: TextField(
                             controller: pass,
                             style: const TextStyle(color: Color(0xFF1EFEBB)),
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               // prefixIcon: const Icon(
                               //   Icons.lock,
                               //   size: 25,
                               //   color: Color(0xFF1EFEBB),
                               // ),
                               labelText: "Password",
-                              labelStyle: GoogleFonts.afacad(
-                                textStyle: const TextStyle(
-                                  color: Color(0xFF1EFEBB),
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 20,
-                                ),
+                              labelStyle: TextStyle(
+                                color: Color(0xFF1EFEBB),
+                                fontWeight: FontWeight.normal,
+                                fontSize: 20,
                               ),
                               border: InputBorder.none,
                               // hintText: "Enter your password",
@@ -205,8 +250,8 @@ class _loginpageState extends State<loginpage> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 50, vertical: 5),
                         child: isLoadind2
-                            ? CircularProgressIndicator(
-                                color: const Color(0xFF1EFEBB),
+                            ? const CircularProgressIndicator(
+                                color: Color(0xFF1EFEBB),
                               )
                             : Container(
                                 height: 60,
@@ -228,26 +273,24 @@ class _loginpageState extends State<loginpage> {
                                 child: TextButton(
                                   onPressed: () async {
                                     setState(() {
-                                      isLoadind2 = true;
+                                      isLoadind2 =
+                                          true; // Start loading when the button is pressed
                                     });
+
                                     try {
-                                      await loginUserWithEmailAndPassword(
-                                          email.text, pass.text, context);
+                                      // Call the login function and pass email, password, and context
+                                      await si(context, email.text, pass.text);
                                     } finally {
+                                      // Stop loading after the operation finishes (success or failure)
                                       setState(() {
                                         isLoadind2 = false;
                                       });
                                     }
                                   },
-                                  child: Text(
-                                    "Login",
-                                    style: GoogleFonts.lato(
-                                      textStyle: const TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w900),
-                                    ),
-                                  ),
+                                  child: isLoadind2
+                                      ? const CircularProgressIndicator() // Show loader while processing
+                                      : const Text(
+                                          "Login"), // Button text when not loading
                                 ),
                               ),
                       ),
@@ -255,8 +298,8 @@ class _loginpageState extends State<loginpage> {
                     const SizedBox(
                       height: 30,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
                       child: Divider(
                         color: Color(0xFF1EFEBB),
                         thickness: 2,
@@ -377,7 +420,7 @@ class _loginpageState extends State<loginpage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: ((context) =>
-                                                register())));
+                                                const register())));
                                   },
                                 text: ' Register here',
                                 style: const TextStyle(

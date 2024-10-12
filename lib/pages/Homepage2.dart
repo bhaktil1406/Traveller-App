@@ -1,16 +1,13 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:ui';
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:tourist_app/pages/AttractionPage.dart';
-import 'package:tourist_app/pages/nagate.dart';
+import 'package:tourist_app/pages/auth.dart';
+import 'package:tourist_app/pages/categoriespage.dart';
 import 'package:tourist_app/pages/stateDetailspage.dart';
 
 class Homepage2 extends StatefulWidget {
@@ -23,10 +20,10 @@ class Homepage2 extends StatefulWidget {
 class _Homepage2State extends State<Homepage2> {
   final double recContSizeHeight = 230;
   late int stateid;
-  int _pageIndex = 0;
+  final int _pageIndex = 0;
 
-  final primaryColor = const Color(0xFF02050A);
-  final secondayColor = const Color(0xFF1EFEBB);
+  final primaryColor = const Color(0xFF1EFEBB);
+  final secondaryColor = const Color(0xFF02050A);
   final ternaryColor = const Color(0xFF1B1E23);
 
   final List<Map<String, String>> destinations = [
@@ -47,6 +44,10 @@ class _Homepage2State extends State<Homepage2> {
         Navigator.pushReplacementNamed(context, 'home');
       } else if (_selectedIndex == 1) {
         Navigator.pushReplacementNamed(context, 'search');
+      } else if (_selectedIndex == 2) {
+        Navigator.pushReplacementNamed(context, 'GroupListPage');
+      } else if (_selectedIndex == 3) {
+        Navigator.pushReplacementNamed(context, 'liked');
       }
     });
   }
@@ -85,8 +86,8 @@ class _Homepage2State extends State<Homepage2> {
 
   Future<void> fetchStateData() async {
     try {
-      final response = await http.get(Uri.parse(
-          'https://traveller-app-api.onrender.com/states/${stateid}'));
+      final response = await http.get(
+          Uri.parse('https://traveller-app-api.onrender.com/states/$stateid'));
 
       if (response.statusCode == 200) {
         setState(() {
@@ -107,6 +108,18 @@ class _Homepage2State extends State<Homepage2> {
     apicall(); // Call the API during widget initialization
     fetchStateData();
     recommended();
+    loadUserData();
+  }
+
+  String userName = 'Loading...';
+
+  void loadUserData() async {
+    auth authService = auth();
+    Map<String, String> userData = await authService.getUserData();
+
+    setState(() {
+      userName = userData['name'] ?? 'Guest';
+    });
   }
 
   @override
@@ -115,7 +128,7 @@ class _Homepage2State extends State<Homepage2> {
     var safeArea = MediaQuery.of(context).padding.top;
 
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 18, 17, 17),
+      backgroundColor: const Color.fromARGB(255, 18, 17, 17),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Stack(
@@ -133,7 +146,7 @@ class _Homepage2State extends State<Homepage2> {
                       color: Colors.black.withOpacity(0.25),
                       blurRadius: 20,
                       spreadRadius: 5,
-                      offset: Offset(0, 5), // Position of the shadow
+                      offset: const Offset(0, 5), // Position of the shadow
                     )
                   ],
                 ),
@@ -198,25 +211,25 @@ class _Homepage2State extends State<Homepage2> {
       //     BottomNavigationBarItem(
       //         icon: Icon(
       //           Icons.home,
-      //           color: secondayColor,
+      //           color: primaryColor,
       //         ),
       //         label: 'Home'),
       //     BottomNavigationBarItem(
       //         icon: Icon(
       //           Icons.search,
-      //           color: secondayColor,
+      //           color: primaryColor,
       //         ),
       //         label: 'Search'),
       //     BottomNavigationBarItem(
       //         icon: Icon(
       //           Icons.favorite,
-      //           color: secondayColor,
+      //           color: primaryColor,
       //         ),
       //         label: 'Like'),
       //     BottomNavigationBarItem(
       //         icon: Icon(
       //           Icons.person,
-      //           color: secondayColor,
+      //           color: primaryColor,
       //         ),
       //         label: 'Profile'),
       //   ],
@@ -225,7 +238,7 @@ class _Homepage2State extends State<Homepage2> {
       // ),
       appBar: AppBar(
         backgroundColor: Colors.black,
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       drawer: Drawer(
         backgroundColor: Colors.white,
@@ -238,14 +251,14 @@ class _Homepage2State extends State<Homepage2> {
                   FirebaseAuth.instance.signOut();
                   Navigator.popAndPushNamed(context, "loginpage");
                 },
-                child: Text("Logout"),
+                child: const Text("Logout"),
               ),
               ElevatedButton(
                 onPressed: () {
                   FirebaseAuth.instance.signOut();
                   Navigator.pushNamed(context, "chatbot");
                 },
-                child: Text("Chatbot"),
+                child: const Text("Chatbot"),
               ),
             ],
           ),
@@ -287,7 +300,7 @@ class _Homepage2State extends State<Homepage2> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            // Navigate to user account page
+                            Navigator.pushNamed(context, "profile");
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -302,7 +315,7 @@ class _Homepage2State extends State<Homepage2> {
                               // ),
                               child: Icon(
                                 Icons.person,
-                                color: secondayColor,
+                                color: primaryColor,
                               ),
                             ),
                           ),
@@ -312,8 +325,8 @@ class _Homepage2State extends State<Homepage2> {
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    'Welcome Max',
-                    style: GoogleFonts.montserrat(
+                    'Welcome $userName',
+                    style: const TextStyle(
                       fontWeight: FontWeight.w500,
                       color: Colors.white,
                       fontSize: 25,
@@ -338,7 +351,7 @@ class _Homepage2State extends State<Homepage2> {
                   //             TextStyle(color: Colors.white, fontSize: 18),
                   //         prefixIcon: Icon(
                   //           Icons.search,
-                  //           color: secondayColor,
+                  //           color: primaryColor,
                   //           size: 25,
                   //         )),
                   //   ),
@@ -356,7 +369,8 @@ class _Homepage2State extends State<Homepage2> {
                   const SizedBox(height: 20),
                   Container(
                     width: double.infinity,
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 15),
                     decoration: BoxDecoration(
                         //  color: Colors.black.withOpacity(0.3),
                         // border: Border.all(
@@ -364,9 +378,9 @@ class _Homepage2State extends State<Homepage2> {
                         //   style: BorderStyle.solid,
                         // ),
                         borderRadius: BorderRadius.circular(25)),
-                    child: Text(
+                    child: const Text(
                       'Top States',
-                      style: GoogleFonts.montserrat(
+                      style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                         fontSize: 26,
@@ -396,42 +410,59 @@ class _Homepage2State extends State<Homepage2> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildCategoryIcon('Camping', 'assets/camping.svg'),
-          SizedBox(width: 30),
-          _buildCategoryIcon('Religious', 'assets/church (1).svg'),
-          SizedBox(width: 30),
-          _buildCategoryIcon('Beaches', 'assets/sun (1).svg'),
-          SizedBox(width: 30),
-          _buildCategoryIcon('Mountains', 'assets/mountain-snow.svg'),
-          SizedBox(width: 30),
-          _buildCategoryIcon('Historical', 'assets/castle (1).svg'),
+          _buildCategoryIcon('Trekking', 'assets/svg/trekking.svg', 0),
+          const SizedBox(width: 30),
+          _buildCategoryIcon('Religious', 'assets/svg/religious.svg', 1),
+          const SizedBox(width: 30),
+          _buildCategoryIcon('Beaches', 'assets/svg/beach.svg', 2),
+          const SizedBox(width: 30),
+          _buildCategoryIcon('Mountains', 'assets/svg/mountain.svg', 3),
+          const SizedBox(width: 30),
+          _buildCategoryIcon('Historical', 'assets/svg/historical.svg', 4),
+          const SizedBox(width: 30),
+          _buildCategoryIcon('Museum', 'assets/svg/museum.svg', 5),
+          const SizedBox(width: 30),
+          _buildCategoryIcon('National Parks', 'assets/svg/nationalpark.svg', 6),
+          const SizedBox(width: 30),
+          _buildCategoryIcon('Wildlife', 'assets/svg/wildlife.svg', 7),
         ],
       ),
     );
   }
 
-  Widget _buildCategoryIcon(String label, String iconPath) {
-    return Column(
-      children: [
-        Container(
-          height: 70,
-          width: 70,
-          padding: const EdgeInsets.all(18.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(50),
-            color: ternaryColor,
+  Widget _buildCategoryIcon(String label, String iconPath, int categoryId) {
+    return GestureDetector(
+      onTap: () async {
+        // Navigate to the AttractionPage
+        await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CategoryPage(categoryId: categoryId, label: label),
           ),
-          child: SvgPicture.asset(iconPath),
-        ),
-        const SizedBox(height: 5),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 13,
-            color: Colors.white,
+        );
+      },
+      child: Column(
+        children: [
+          Container(
+            height: 70,
+            width: 70,
+            padding: const EdgeInsets.all(18.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+              color: ternaryColor,
+            ),
+            child: SvgPicture.asset(iconPath),
           ),
-        ),
-      ],
+          const SizedBox(height: 5),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 13,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -484,7 +515,7 @@ class _Homepage2State extends State<Homepage2> {
       children: [
         Container(
           width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
           decoration: BoxDecoration(
               // color: Colors.black.withOpacity(0.3),
               // border: Border.all(
@@ -492,16 +523,16 @@ class _Homepage2State extends State<Homepage2> {
               //   style: BorderStyle.solid,
               // ),
               borderRadius: BorderRadius.circular(25)),
-          child: Text(
+          child: const Text(
             'Recommended',
-            style: GoogleFonts.montserrat(
+            style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.white,
               fontSize: 26,
             ),
             // style: TextStyle(
             //   fontWeight: FontWeight.w400,
-            //   color: secondayColor,
+            //   color: primaryColor,
             //   fontSize: 23,
             // ),
           ),
@@ -510,7 +541,7 @@ class _Homepage2State extends State<Homepage2> {
         recommendedlist.isEmpty
             ? Center(
                 child: CircularProgressIndicator(
-                color: secondayColor,
+                color: primaryColor,
               ))
             : SizedBox(
                 height: 300, // Set an explicit height for the scrollable area
@@ -524,6 +555,7 @@ class _Homepage2State extends State<Homepage2> {
                         recommendedlist[index]['id'],
                         recommendedlist[index]['name'],
                         recommendedlist[index]['cover_img'],
+                        recommendedlist[index]['city_name'],
                         recommendedlist[index]['state_name'],
                       ),
                     );
@@ -582,7 +614,7 @@ class _Homepage2State extends State<Homepage2> {
   // }
 
   Widget _buildRecommendedCard(
-      int id, String name, String imagePath, String state) {
+      int id, String name, String imagePath, String city, String state) {
     return Container(
       height: 300,
       width: 300,
@@ -607,16 +639,17 @@ class _Homepage2State extends State<Homepage2> {
               );
             },
             child: ClipRRect(
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(25),
                 topRight: Radius.circular(25),
               ),
               child: Image.network(
-                "${imagePath}?w=300&h=-1&s=1", // Load image from URL
+                "$imagePath?w=300&h=-1&s=1", // Load image from URL
                 height: 200,
                 width: double.infinity,
                 fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => Icon(Icons.error),
+                errorBuilder: (context, error, stackTrace) =>
+                    const Icon(Icons.error),
               ),
             ),
           ),
@@ -629,33 +662,20 @@ class _Homepage2State extends State<Homepage2> {
                 Expanded(
                   child: Text(
                     name,
-                    style: TextStyle(color: Colors.white, fontSize: 23),
+                    style: const TextStyle(color: Colors.white, fontSize: 23),
                     overflow: TextOverflow.ellipsis, // Handle long names
                   ),
                 ),
                 const SizedBox(width: 50),
-                Container(
-                  height: 40,
-                  width: 40,
-                  padding: EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: Color.fromARGB(255, 43, 43, 43)),
-                  child: const Icon(
-                    Icons.favorite_border,
-                    color: Color(0xFF1EFEBB),
-                    size: 25,
-                  ),
-                ),
               ],
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             alignment: Alignment.topLeft,
             child: Text(
-              state,
-              style: TextStyle(
+              "$city, $state",
+              style: const TextStyle(
                   color: Color.fromARGB(255, 95, 95, 95), fontSize: 17),
             ),
           )
@@ -664,259 +684,264 @@ class _Homepage2State extends State<Homepage2> {
     );
   }
 
-  Widget _buildDestinationList() {
-    // Check if the listResponse is null or empty
-    if (listResponse == null || listResponse.isEmpty) {
-      return Center(
-        child: CircularProgressIndicator(
-          color: secondayColor,
-        ), // Show loading indicator while the list is loading
-      );
-    }
-
-    return SizedBox(
-      height: 600,
-      child: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, // Number of items per row
-          crossAxisSpacing: 5, // Horizontal space between items
-          mainAxisSpacing: 5, // Vertical space between items
-          childAspectRatio: 1, // Ratio of width to height of grid items
-        ),
-        padding: const EdgeInsets.all(10),
-        itemCount: listResponse.length, // Number of items in the grid
-        itemBuilder: (context, index) {
-          // Ensure stateResponse is not null and contains 'state_data' and 'attr_data'
-          final stateInfo = stateResponse?['state_data'];
-          final attractions = stateResponse?['attr_data'];
-
-          // Check if attractions exist and have 'images', otherwise use a placeholder
-          String imageUrl = attractions != null &&
-                  attractions.containsKey('images')
-              ? attractions['images']
-              : ''; // Leave as an empty string to trigger CircularProgressIndicator
-
-          // Check if index is an odd number to add an offset for the second item in the row
-          bool isSecondItem = (index % 2 != 0);
-
-          return Stack(
-            children: [
-              // Add a vertical line between grid columns
-              if (index % 2 == 1) Positioned.fill(child: buildVerticalLine()),
-
-              Transform.translate(
-                offset: isSecondItem
-                    ? Offset(0, 30)
-                    : Offset(0, 0), // Offset second item
-                child: GestureDetector(
-                  onTap: () {
-                    // Ensure 'stateid' is assigned before using it
-                    stateid = listResponse[index][0];
-                    print(stateid);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            Statedetailspage(stateid: stateid),
-                      ),
-                    );
-                  },
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 15),
-                        child: Stack(
-                          children: [
-                            // Container to display image or loading indicator
-                            Container(
-                              height: 120,
-                              width: double
-                                  .infinity, // Ensure it takes full available width
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color:
-                                    Colors.grey, // Placeholder background color
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image.network(
-                                  "${listResponse[index][2]}",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            // Positioned widget for the state name and location pin icon
-                            Positioned(
-                              bottom: 10,
-                              left: 10,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 8),
-                                decoration: BoxDecoration(
-                                  color: Colors.black.withOpacity(0.3),
-                                  borderRadius: BorderRadius.circular(25),
-                                ),
-                                child: Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.location_pin,
-                                      color: Color(0xFF1EFEBB),
-                                      size: 10,
-                                    ),
-                                    Text(
-                                      listResponse[index][1],
-                                      style: GoogleFonts.poppins(
-                                        color: Colors.white,
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          );
-        },
-      ),
-    );
-  }
-
-// Function to build the vertical line
   Widget buildVerticalLine() {
     return Align(
       alignment: Alignment.centerRight,
       child: Container(
         width: 2, // Thickness of the vertical line
+
         height: double.infinity, // Full height of the grid item
+
         color: const Color.fromARGB(255, 255, 250, 250)
-            .withOpacity(0.3), // Line color
+            .withOpacity(0.3), // Line color with some transparency
       ),
+    );
+  }
+
+  Widget _buildDestinationList() {
+    // Check if the listResponse is null or empty
+
+    if (listResponse.isEmpty) {
+      return Center(
+        child: CircularProgressIndicator(
+          color: primaryColor,
+        ), // Show loading indicator while the list is loading
+      );
+    }
+
+    return GridView.builder(
+      shrinkWrap: true, // Allows the GridView to take only necessary space
+
+      physics: const NeverScrollableScrollPhysics(), // Disable its scrolling
+
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2, // Number of items per row
+
+        crossAxisSpacing: 5, // Horizontal space between items
+
+        mainAxisSpacing: 5, // Vertical space between items
+
+        childAspectRatio: 1, // Ratio of width to height of grid items
+      ),
+
+      padding: const EdgeInsets.all(10),
+
+      itemCount: listResponse.length, // Number of items in the grid
+
+      itemBuilder: (context, index) {
+        final stateInfo = stateResponse?['state_data'];
+
+        final attractions = stateResponse?['attr_data'];
+
+        String imageUrl =
+            attractions != null && attractions.containsKey('images')
+                ? attractions['images']
+                : '';
+
+        bool isSecondItem = (index % 2 != 0);
+
+        return Stack(
+          children: [
+            if (index % 2 == 1) Positioned.fill(child: buildVerticalLine()),
+            Transform.translate(
+              offset: isSecondItem ? const Offset(0, 30) : const Offset(0, 0),
+              child: GestureDetector(
+                onTap: () {
+                  stateid = listResponse[index][0];
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Statedetailspage(stateid: stateid),
+                    ),
+                  );
+                },
+                child: Column(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 15),
+                      child: Stack(
+                        children: [
+                          Container(
+                            height: 120,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.grey,
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.network(
+                                "${listResponse[index][2]}",
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 10,
+                            left: 10,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 8),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(25),
+                              ),
+                              child: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.location_pin,
+                                    color: Color(0xFF1EFEBB),
+                                    size: 10,
+                                  ),
+                                  Text(
+                                    listResponse[index][1],
+                                    style: GoogleFonts.poppins(
+                                      color: Colors.white,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
 
+// Function to build the vertical line
+Widget buildVerticalLine() {
+  return Align(
+    alignment: Alignment.centerRight,
+    child: Container(
+      width: 2, // Thickness of the vertical line
+      height: double.infinity, // Full height of the grid item
+      color: const Color.fromARGB(255, 255, 250, 250)
+          .withOpacity(0.3), // Line color
+    ),
+  );
+}
 
+// Widget _buildDestinationList() {
+// Check if the listResponse is null or empty
+// if (listResponse == null || listResponse.isEmpty) {
+//   return Center(
+//     child: CircularProgressIndicator(), // Show loading indicator while the list is loading
+//   );
+// }
 
+//   return Column(
+//     children: List.generate(listResponse.length, (index) {
+//       // Ensure stateResponse is not null and contains 'state_data' and 'attr_data'
+//       final stateInfo = stateResponse?['state_data'];
+//       final attractions = stateResponse?['attr_data'];
 
-  // Widget _buildDestinationList() {
-    // Check if the listResponse is null or empty
-  // if (listResponse == null || listResponse.isEmpty) {
-  //   return Center(
-  //     child: CircularProgressIndicator(), // Show loading indicator while the list is loading
-  //   );
-  // }
+//       // Check if attractions exist and have 'images', otherwise use a placeholder
+//       String imageUrl = attractions != null &&
+//               attractions.containsKey('images')
+//           ? attractions['images']
+//           : ''; // Leave as an empty string to trigger CircularProgressIndicator
 
-  //   return Column(
-  //     children: List.generate(listResponse.length, (index) {
-  //       // Ensure stateResponse is not null and contains 'state_data' and 'attr_data'
-  //       final stateInfo = stateResponse?['state_data'];
-  //       final attractions = stateResponse?['attr_data'];
-
-  //       // Check if attractions exist and have 'images', otherwise use a placeholder
-  //       String imageUrl = attractions != null &&
-  //               attractions.containsKey('images')
-  //           ? attractions['images']
-  //           : ''; // Leave as an empty string to trigger CircularProgressIndicator
-
-  //       return GestureDetector(
-  //         onTap: () {
-  //           // Ensure 'stateid' is assigned before using it
-  //           stateid = listResponse[index][0];
-  //           print(stateid);
-  //           Navigator.push(
-  //             context,
-  //             MaterialPageRoute(
-  //               builder: (context) => Statedetailspage(stateid: stateid),
-  //             ),
-  //           );
-  //         },
-  //         child: Column(
-  //           children: [
-  //             Container(
-  //               margin:
-  //                   const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-  //               child: Stack(
-  //                 children: [
-  //                   // Container to display image or loading indicator
-  //                   Container(
-  //                     height: 200,
-  //                     width: double
-  //                         .infinity, // Ensure it takes full available width
-  //                     decoration: BoxDecoration(
-  //                       borderRadius: BorderRadius.circular(10),
-  //                       color: Colors.grey, // Placeholder background color
-  //                     ),
-  //                     child: ClipRRect(
-  //                       borderRadius: BorderRadius.circular(10),
-  //                       // child: imageUrl.isEmpty
-  //                       //     ? Center(
-  //                       //         child:
-  //                       //             CircularProgressIndicator(), // Show loader when no image
-  //                       //       )
-  //                       //     : FadeInImage.assetNetwork(
-  //                       //         placeholder: '',
-  //                       //         image: '${imageUrl}',
-  //                       //         height: 200,
-  //                       //         width: 400,
-  //                       //         fit: BoxFit.cover,
-  //                       //         fadeInDuration: Duration(milliseconds: 500),
-  //                       //         imageErrorBuilder:
-  //                       //             (context, error, stackTrace) {
-  //                       //           return Center(
-  //                       //             child:
-  //                       //                 CircularProgressIndicator(), // Keep showing the loader if there's an error
-  //                       //           );
-  //                       //         },
-  //                       //       ),
-  //                       child: Image.network(
-  //                         "${listResponse[index][2]}",
-  //                         fit: BoxFit.cover,
-  //                       ),
-  //                     ),
-  //                   ),
-  //                   // Positioned widget for the state name and location pin icon
-  //                   Positioned(
-  //                     bottom: 10,
-  //                     left: 10,
-  //                     child: Container(
-  //                       padding: const EdgeInsets.symmetric(
-  //                           horizontal: 8, vertical: 8),
-  //                       decoration: BoxDecoration(
-  //                         color: Colors.black.withOpacity(0.5),
-  //                         borderRadius: BorderRadius.circular(10),
-  //                       ),
-  //                       child: Row(
-  //                         children: [
-  //                           const Icon(Icons.location_pin, color: Colors.white),
-  //                           Text(
-  //                             listResponse[index][1],
-  //                             style: GoogleFonts.poppins(
-  //                               color: Colors.white,
-  //                               fontSize: 14,
-  //                               fontWeight: FontWeight.w600,
-  //                             ),
-  //                           ),
-  //                         ],
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //       );
-  //     }),
-  //   );
-  // }
-
-
+//       return GestureDetector(
+//         onTap: () {
+//           // Ensure 'stateid' is assigned before using it
+//           stateid = listResponse[index][0];
+//           print(stateid);
+//           Navigator.push(
+//             context,
+//             MaterialPageRoute(
+//               builder: (context) => Statedetailspage(stateid: stateid),
+//             ),
+//           );
+//         },
+//         child: Column(
+//           children: [
+//             Container(
+//               margin:
+//                   const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+//               child: Stack(
+//                 children: [
+//                   // Container to display image or loading indicator
+//                   Container(
+//                     height: 200,
+//                     width: double
+//                         .infinity, // Ensure it takes full available width
+//                     decoration: BoxDecoration(
+//                       borderRadius: BorderRadius.circular(10),
+//                       color: Colors.grey, // Placeholder background color
+//                     ),
+//                     child: ClipRRect(
+//                       borderRadius: BorderRadius.circular(10),
+//                       // child: imageUrl.isEmpty
+//                       //     ? Center(
+//                       //         child:
+//                       //             CircularProgressIndicator(), // Show loader when no image
+//                       //       )
+//                       //     : FadeInImage.assetNetwork(
+//                       //         placeholder: '',
+//                       //         image: '${imageUrl}',
+//                       //         height: 200,
+//                       //         width: 400,
+//                       //         fit: BoxFit.cover,
+//                       //         fadeInDuration: Duration(milliseconds: 500),
+//                       //         imageErrorBuilder:
+//                       //             (context, error, stackTrace) {
+//                       //           return Center(
+//                       //             child:
+//                       //                 CircularProgressIndicator(), // Keep showing the loader if there's an error
+//                       //           );
+//                       //         },
+//                       //       ),
+//                       child: Image.network(
+//                         "${listResponse[index][2]}",
+//                         fit: BoxFit.cover,
+//                       ),
+//                     ),
+//                   ),
+//                   // Positioned widget for the state name and location pin icon
+//                   Positioned(
+//                     bottom: 10,
+//                     left: 10,
+//                     child: Container(
+//                       padding: const EdgeInsets.symmetric(
+//                           horizontal: 8, vertical: 8),
+//                       decoration: BoxDecoration(
+//                         color: Colors.black.withOpacity(0.5),
+//                         borderRadius: BorderRadius.circular(10),
+//                       ),
+//                       child: Row(
+//                         children: [
+//                           const Icon(Icons.location_pin, color: Colors.white),
+//                           Text(
+//                             listResponse[index][1],
+//                             style: GoogleFonts.poppins(
+//                               color: Colors.white,
+//                               fontSize: 14,
+//                               fontWeight: FontWeight.w600,
+//                             ),
+//                           ),
+//                         ],
+//                       ),
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ],
+//         ),
+//       );
+//     }),
+//   );
+// }

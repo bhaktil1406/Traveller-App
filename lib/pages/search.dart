@@ -1,12 +1,21 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert'; // To decode JSON
+import 'dart:convert';
+
+import 'package:tourist_app/pages/AttractionPage.dart';
+import 'package:tourist_app/pages/stateDetailspage.dart'; // To decode JSON
 
 class SearchPage extends StatefulWidget {
+  const SearchPage({super.key});
+
   @override
   _SearchPageState createState() => _SearchPageState();
 }
+
+const primaryColor = Color(0xFF1EFEBB);
+const secondayColor = Color(0xFF02050A);
+const ternaryColor = Color(0xFF1B1E23);
 
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
@@ -29,7 +38,7 @@ class _SearchPageState extends State<SearchPage> {
 
   // Default selected search type
   String _selectedType = 'all'; // Default is 'all'
-  final List<String> _searchTypes = ['attraction', 'state', 'all'];
+  final List<String> _searchTypes = ['all', 'state', 'attraction'];
 
   // API call function
   Future<void> _searchAttractions(String query) async {
@@ -62,9 +71,13 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 18, 17, 17),
+      backgroundColor: const Color.fromARGB(255, 18, 17, 17),
       appBar: AppBar(
-        title: Text("Search Attractions"),
+        title: const Text("Search",
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 23,
+                fontWeight: FontWeight.bold)),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -75,27 +88,41 @@ class _SearchPageState extends State<SearchPage> {
             // Search bar
             TextField(
               controller: _searchController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Search",
-                border: OutlineInputBorder(),
+                floatingLabelStyle: TextStyle(color: primaryColor),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(30.0)), // Rounded corners
+                ),
                 prefixIcon: Icon(Icons.search),
+                focusColor: primaryColor,
+                hoverColor: primaryColor,
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                  borderSide: BorderSide(
+                      color: primaryColor), // Green border when focused
+                ),
               ),
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
+              cursorColor: primaryColor,
               onSubmitted: (value) {
-                if (value.isNotEmpty) {
+                if (value.length > 3) {
                   _searchAttractions(value);
                 }
               },
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Pill-shaped toggle buttons for selecting type
+
             ToggleButtons(
               borderColor: Colors.grey,
-              selectedBorderColor: Colors.blue,
-              fillColor: Colors.blue.withOpacity(0.1),
-              color: const Color.fromARGB(255, 255, 255, 255),
-              selectedColor: Colors.blue,
+              selectedBorderColor: primaryColor,
+              borderRadius: BorderRadius.circular(30.0),
+              fillColor: primaryColor.withOpacity(0.2),
+              color: Colors.white,
+              selectedColor: primaryColor,
               isSelected:
                   _searchTypes.map((type) => type == _selectedType).toList(),
               onPressed: (index) {
@@ -105,16 +132,19 @@ class _SearchPageState extends State<SearchPage> {
               },
               children: _searchTypes.map((type) {
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child:
-                      Text(type.capitalize(), style: TextStyle(fontSize: 16)),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(type.capitalize(),
+                        style: const TextStyle(fontSize: 16)),
+                  ),
                 );
               }).toList(),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Loading indicator
-            if (_isLoading) CircularProgressIndicator(),
+            if (_isLoading) const CircularProgressIndicator(),
 
             // Search results
             Expanded(
@@ -122,60 +152,26 @@ class _SearchPageState extends State<SearchPage> {
                 itemCount: _results.length,
                 itemBuilder: (context, index) {
                   var attraction = _results[index];
-                  return Card(
-                    elevation: 4.0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Attraction image
-                        Container(
-                          height: 150,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(10.0)),
-                            image: DecorationImage(
-                              image: NetworkImage(attraction['type'] == 'state'
-                                  ? attraction['STATE_IMAGE']
-                                  : attraction['cover_img']),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                attraction['type'] == 'state'
-                                    ? attraction['STATE_NAME']
-                                    : attraction['name'],
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(height: 5),
-                              Text(
-                                attraction['type'] == 'state'
-                                    ? attraction['STATE_INFO'] ??
-                                        'No description available.'
-                                    : attraction['about'] ??
-                                        'No description available.',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey[600],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
+                  if (attraction["type"] == "attraction") {
+                    return _buildAttrationCard(
+                      attraction["id"], // Assuming each attraction has an id
+                      attraction["name"], // Assuming each attraction has a name
+                      attraction[
+                          "cover_img"], // Assuming each attraction has an image path
+                      attraction["city_name"],
+                      attraction[
+                          "state_name"], // Assuming each attraction has a state
+                    );
+                  } else {
+                    return _buildStateCard(
+                      attraction[
+                          "STATE_ID"], // Assuming each attraction has an id
+                      attraction[
+                          "STATE_NAME"], // Assuming each attraction has a name
+                      attraction[
+                          "STATE_IMAGE"], // Assuming each attraction has an image path
+                    );
+                  }
                 },
               ),
             ),
@@ -199,7 +195,7 @@ class _SearchPageState extends State<SearchPage> {
                       color: Colors.black.withOpacity(0.25),
                       blurRadius: 20,
                       spreadRadius: 5,
-                      offset: Offset(0, 5), // Position of the shadow
+                      offset: const Offset(0, 5), // Position of the shadow
                     )
                   ],
                 ),
@@ -259,10 +255,194 @@ class _SearchPageState extends State<SearchPage> {
       ),
     );
   }
+
+  Widget _buildAttrationCard(
+      int id, String name, String imagePath, String city, String state) {
+    return Container(
+      height: 300,
+      width: double.infinity, // Make sure the width fills the container
+      margin: const EdgeInsets.symmetric(
+          vertical: 10), // Add vertical spacing between cards
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(25),
+        border: Border.all(
+          color: const Color.fromARGB(255, 80, 80, 80),
+          style: BorderStyle.solid,
+        ),
+      ),
+      child: Stack(
+        children: [
+          Column(
+            children: [
+              GestureDetector(
+                onTap: () async {
+                  // Navigate to the AttractionPage
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AttractionPage(attrId: id),
+                    ),
+                  );
+                },
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(25),
+                    topRight: Radius.circular(25),
+                  ),
+                  child: Image.network(
+                    "$imagePath?w=300&h=-1&s=1", // Load image from URL
+                    height: 200,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) =>
+                        const Icon(Icons.error),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        name,
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 23),
+                        overflow: TextOverflow.ellipsis, // Handle long names
+                      ),
+                    ),
+                    const SizedBox(width: 50)
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                alignment: Alignment.topLeft,
+                child: Text(
+                  "$city, $state",
+                  style: const TextStyle(
+                    color: Color.fromARGB(255, 95, 95, 95),
+                    fontSize: 17,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Positioned(
+            top: 10,
+            right: 10,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.6),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                "Attraction",
+                style: TextStyle(
+                    color: primaryColor,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStateCard(int id, String name, String imagePath) {
+    return Container(
+      height: 300,
+      width: double.infinity, // Make sure the width fills the container
+      margin: const EdgeInsets.symmetric(
+          vertical: 10), // Add vertical spacing between cards
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(25),
+        border: Border.all(
+          color: const Color.fromARGB(255, 80, 80, 80),
+          style: BorderStyle.solid,
+        ),
+      ),
+      child: Stack(
+        children: [
+          Column(
+            children: [
+              GestureDetector(
+                onTap: () async {
+                  // Navigate to the AttractionPage
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Statedetailspage(stateid: id),
+                    ),
+                  );
+                },
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(25),
+                    topRight: Radius.circular(25),
+                  ),
+                  child: Image.network(
+                    "$imagePath?w=300&h=-1&s=1", // Load image from URL
+                    height: 200,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) =>
+                        const Icon(Icons.error),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        name,
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 23),
+                        overflow: TextOverflow.ellipsis, // Handle long names
+                      ),
+                    ),
+                    const SizedBox(width: 50)
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Positioned(
+            top: 10,
+            right: 10,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.6),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                "State",
+                style: TextStyle(
+                    color: primaryColor,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 extension StringCasingExtension on String {
   String capitalize() {
-    return this[0].toUpperCase() + this.substring(1);
+    return this[0].toUpperCase() + substring(1);
   }
 }

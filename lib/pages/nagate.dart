@@ -2,6 +2,8 @@ import 'dart:ui'; // Needed for BackdropFilter
 import 'package:flutter/material.dart';
 
 class Navigation extends StatefulWidget {
+  const Navigation({super.key});
+
   @override
   _NavigationState createState() => _NavigationState();
 }
@@ -39,7 +41,7 @@ class _NavigationState extends State<Navigation> {
                       color: Colors.black.withOpacity(0.25),
                       blurRadius: 20,
                       spreadRadius: 5,
-                      offset: Offset(0, 5), // Position of the shadow
+                      offset: const Offset(0, 5), // Position of the shadow
                     )
                   ],
                 ),

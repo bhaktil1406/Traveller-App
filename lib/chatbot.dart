@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class chatbot extends StatefulWidget {
-  const chatbot({Key? key}) : super(key: key);
+  const chatbot({super.key});
 
   @override
   _ChatBotState createState() => _ChatBotState();
@@ -24,9 +24,8 @@ class _ChatBotState extends State<chatbot> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        
         title: const Text('ChatBot'),
-        backgroundColor: Color.fromARGB(141, 0, 0, 0), // Deep Blue color
+        backgroundColor: const Color.fromARGB(141, 0, 0, 0), // Deep Blue color
       ),
       body: Column(
         children: [
@@ -34,7 +33,7 @@ class _ChatBotState extends State<chatbot> {
             child: Container(
               padding: const EdgeInsets.all(10.0),
               decoration: const BoxDecoration(
-                gradient: const LinearGradient(colors: [
+                gradient: LinearGradient(colors: [
                   Color.fromARGB(141, 0, 0, 0),
                   Color.fromARGB(204, 0, 0, 0),
                   Color.fromARGB(255, 0, 0, 0),
@@ -57,7 +56,7 @@ class _ChatBotState extends State<chatbot> {
                       padding: const EdgeInsets.all(15.0),
                       decoration: BoxDecoration(
                         color: index % 2 == 0
-                            ? Color(0xfffed0a9)
+                            ? const Color(0xfffed0a9)
                             : Colors.grey.shade300,
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -81,7 +80,7 @@ class _ChatBotState extends State<chatbot> {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                           color: Color(0xfffed0a9),
                           blurRadius: 9,
@@ -95,7 +94,7 @@ class _ChatBotState extends State<chatbot> {
                       decoration: InputDecoration(
                         hintText: "Type a message...",
                         filled: true,
-                        fillColor: Color(0xfffed0a9),
+                        fillColor: const Color(0xfffed0a9),
                         contentPadding:
                             const EdgeInsets.symmetric(horizontal: 20.0),
                         border: OutlineInputBorder(
@@ -112,7 +111,7 @@ class _ChatBotState extends State<chatbot> {
                   width: 50,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Color(0xfffed0a9),
                         blurRadius: 9,
@@ -123,10 +122,10 @@ class _ChatBotState extends State<chatbot> {
                   ),
                   child: FloatingActionButton(
                     onPressed: _sendMessage,
-                    backgroundColor: Color(0xfffed0a9),
+                    backgroundColor: const Color(0xfffed0a9),
+                    mini: true,
                     child: const Icon(Icons.send,
                         color: Color.fromARGB(255, 0, 0, 0)),
-                    mini: true,
                   ),
                 ),
               ],
