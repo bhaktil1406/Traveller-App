@@ -20,7 +20,6 @@ class Homepage2 extends StatefulWidget {
 class _Homepage2State extends State<Homepage2> {
   final double recContSizeHeight = 230;
   late int stateid;
-  final int _pageIndex = 0;
 
   final primaryColor = const Color(0xFF1EFEBB);
   final secondaryColor = const Color(0xFF02050A);
@@ -729,15 +728,6 @@ class _Homepage2State extends State<Homepage2> {
       itemCount: listResponse.length, // Number of items in the grid
 
       itemBuilder: (context, index) {
-        final stateInfo = stateResponse?['state_data'];
-
-        final attractions = stateResponse?['attr_data'];
-
-        String imageUrl =
-            attractions != null && attractions.containsKey('images')
-                ? attractions['images']
-                : '';
-
         bool isSecondItem = (index % 2 != 0);
 
         return Stack(

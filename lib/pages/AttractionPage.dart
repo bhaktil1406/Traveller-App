@@ -448,11 +448,11 @@ class _AttractionPageState extends State<AttractionPage> {
 class InfoButton extends StatelessWidget {
   final IconData icon;
   final String label;
-  var primaryColor = const Color(0xFF1EFEBB);
-  var secondaryColor = const Color(0xFF02050A);
-  var ternaryColor = const Color(0xFF1B1E23);
+  final primaryColor = const Color(0xFF1EFEBB);
+  final secondaryColor = const Color(0xFF02050A);
+  final ternaryColor = const Color(0xFF1B1E23);
 
-  InfoButton({super.key, required this.icon, required this.label});
+  const InfoButton({super.key, required this.icon, required this.label});
 
   @override
   Widget build(BuildContext context) {
