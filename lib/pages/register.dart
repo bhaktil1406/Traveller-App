@@ -105,6 +105,7 @@ class _registerState extends State<register> {
           'name': name.text,
           'email': email.text,
           'pass': pass.text,
+          'liked': [],
         };
         await FirebaseFirestore.instance
             .collection('user')
