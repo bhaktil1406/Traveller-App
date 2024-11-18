@@ -5,6 +5,7 @@ import 'package:tourist_app/chat/GropListPage.dart';
 import 'package:tourist_app/chat/feed.dart';
 import 'package:tourist_app/chatbot.dart';
 import 'package:tourist_app/pages/Homepage2.dart';
+import 'package:tourist_app/pages/iternery.dart';
 import 'package:tourist_app/pages/likepage.dart';
 import 'package:tourist_app/pages/loginpage.dart';
 import 'package:tourist_app/pages/profilepage.dart';
@@ -31,6 +32,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(fontFamily: GoogleFonts.montserrat().fontFamily),
       // theme: ThemeData(),
       home: isLoggedIn ? const Homepage2() : const register(),
+      // home: ItineraryScreen(
+      //   destination: 'Manali',
+      //   totalDays: 2,
+      // ),
       routes: {
         'register': (context) => const register(),
         'home': (context) => const Homepage2(),
