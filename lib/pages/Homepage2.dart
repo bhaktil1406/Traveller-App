@@ -47,9 +47,9 @@ class _Homepage2State extends State<Homepage2> {
       } else if (_selectedIndex == 2) {
         Navigator.pushReplacementNamed(context, 'GroupListPage');
       } else if (_selectedIndex == 3) {
-        Navigator.pushReplacementNamed(context, 'liked');
+        Navigator.pushReplacementNamed(context, 'itinerary');
       } else if (_selectedIndex == 4) {
-        Navigator.pushReplacementNamed(context, 'Group');
+        Navigator.pushReplacementNamed(context, 'FeedPage');
       }
     });
   }
@@ -244,8 +244,12 @@ class _Homepage2State extends State<Homepage2> {
                         label: 'Groups', // No label
                       ),
                       BottomNavigationBarItem(
-                        icon: Icon(Icons.favorite),
-                        label: 'Likes', // No label
+                        icon: Icon(Icons.line_style_outlined),
+                        label: 'AI Itinerary', // No label
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.article_rounded),
+                        label: 'Feed', // No label
                       ),
                     ],
                     currentIndex: _selectedIndex,
@@ -259,78 +263,8 @@ class _Homepage2State extends State<Homepage2> {
           ],
         ),
       ),
-
-      // bottomNavigationBar: BottomNavigationBar(
-      //   items: [
-      //     BottomNavigationBarItem(
-      //         icon: Icon(
-      //           Icons.home,
-      //           color: primaryColor,
-      //         ),
-      //         label: 'Home'),
-      //     BottomNavigationBarItem(
-      //         icon: Icon(
-      //           Icons.search,
-      //           color: primaryColor,
-      //         ),
-      //         label: 'Search'),
-      //     BottomNavigationBarItem(
-      //         icon: Icon(
-      //           Icons.favorite,
-      //           color: primaryColor,
-      //         ),
-      //         label: 'Like'),
-      //     BottomNavigationBarItem(
-      //         icon: Icon(
-      //           Icons.person,
-      //           color: primaryColor,
-      //         ),
-      //         label: 'Profile'),
-      //   ],
-      //   backgroundColor: Colors.black.withOpacity(0.3),
-      //   selectedItemColor: Colors.black,
-      // ),
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        iconTheme: const IconThemeData(color: Colors.white),
-      ),
-      drawer: Drawer(
-        backgroundColor: Colors.white,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  FirebaseAuth.instance.signOut();
-                  Navigator.popAndPushNamed(context, "loginpage");
-                },
-                child: const Text("Logout"),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  FirebaseAuth.instance.signOut();
-                  Navigator.pushNamed(context, "chatbot");
-                },
-                child: const Text("Chatbot"),
-              ),
-            ],
-          ),
-        ),
-      ),
-      // backgroundColor: primaryColor,
       body: Stack(
         children: [
-          // Background image container
-          // Container(
-          //   decoration: BoxDecoration(
-          //     image: DecorationImage(
-          //       image: AssetImage('assets/un1.png'),
-          //       fit: BoxFit.cover,
-          //     ),
-          //   ),
-          // ),
-          // The rest of your content goes here
           SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(15.0),
@@ -352,28 +286,58 @@ class _Homepage2State extends State<Homepage2> {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(context, "profile");
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.5),
-                                shape: BoxShape.circle),
-                            height: 100,
-                            width: 50,
-                            child: Padding(
-                              padding: const EdgeInsets.all(14.0),
-                              // child: SvgPicture.asset(
-                              //   'assets/m.svg',
-                              // ),
-                              child: Icon(
-                                Icons.person,
-                                color: primaryColor,
+                        SizedBox(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(context, "liked");
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.black.withOpacity(0.5),
+                                      shape: BoxShape.circle),
+                                  height: 150,
+                                  width: 50,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(14.0),
+                                    // child: SvgPicture.asset(
+                                    //   'assets/m.svg',
+                                    // ),
+                                    child: Icon(
+                                      Icons.favorite,
+                                      color: primaryColor,
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
+                              SizedBox(width: 20),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(context, "profile");
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.black.withOpacity(0.5),
+                                      shape: BoxShape.circle),
+                                  height: 100,
+                                  width: 50,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(14.0),
+                                    // child: SvgPicture.asset(
+                                    //   'assets/m.svg',
+                                    // ),
+                                    child: Icon(
+                                      Icons.person,
+                                      color: primaryColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
+                        )
                       ],
                     ),
                   ),
@@ -600,7 +564,7 @@ class _Homepage2State extends State<Homepage2> {
                 color: primaryColor,
               ))
             : SizedBox(
-                height: 300, // Set an explicit height for the scrollable area
+                height: 310, // Set an explicit height for the scrollable area
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal, // Horizontal scrolling
                   itemCount: recommendedlist.length,

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tourist_app/pages/auth.dart';
 
@@ -32,16 +33,100 @@ class _ProfilepageState extends State<Profilepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Profile Page')),
+      backgroundColor: const Color.fromARGB(255, 18, 17, 17),
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: const Text(
+          'Profile Page',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Name: $userName', style: const TextStyle(fontSize: 20)),
-            const SizedBox(height: 10),
-            Text('Email: $userEmail', style: const TextStyle(fontSize: 20)),
-          ],
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Profile Picture
+              // CircleAvatar(
+              //   radius: 50,
+              //   backgroundColor: Colors.grey.shade800,
+              //   child: Icon(
+              //     Icons.person,
+              //     size: 50,
+              //     color: Colors.grey.shade600,
+              //   ),
+              // ),
+              const SizedBox(height: 20),
+              // User Info Card
+              Card(
+                color: Colors.grey.shade900,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Name:',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey.shade500,
+                        ),
+                      ),
+                      Text(
+                        userName,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      Text(
+                        'Email:',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey.shade500,
+                        ),
+                      ),
+                      Text(
+                        userEmail,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 30),
+              // Logout Button
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF0EFEBB),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                ),
+                onPressed: () {
+                  FirebaseAuth.instance.signOut();
+                  Navigator.popAndPushNamed(context, "loginpage");
+                },
+                child: const Text(
+                  'Logout',
+                  style: TextStyle(fontSize: 18, color: Colors.black),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

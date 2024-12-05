@@ -151,20 +151,6 @@ class _LikedPageState extends State<LikedPage> {
                   ),
                 ),
                 const SizedBox(width: 50),
-                Container(
-                  height: 40,
-                  width: 40,
-                  padding: const EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    color: const Color.fromARGB(255, 43, 43, 43),
-                  ),
-                  child: const Icon(
-                    Icons.favorite_border,
-                    color: Color(0xFF1EFEBB),
-                    size: 25,
-                  ),
-                ),
               ],
             ),
           ),
@@ -184,7 +170,6 @@ class _LikedPageState extends State<LikedPage> {
     );
   }
 
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -196,6 +181,8 @@ class _LikedPageState extends State<LikedPage> {
         Navigator.pushReplacementNamed(context, 'GroupListPage');
       } else if (_selectedIndex == 3) {
         Navigator.pushReplacementNamed(context, 'liked');
+      } else if (_selectedIndex == 4) {
+        Navigator.pushReplacementNamed(context, 'FeedPage');
       }
     });
   }
@@ -204,82 +191,6 @@ class _LikedPageState extends State<LikedPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 18, 17, 17),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Stack(
-          children: [
-            // This adds a shadow below the bar for a floating effect
-            Positioned(
-              bottom: 10,
-              left: 0,
-              right: 0,
-              child: Container(
-                height: 80,
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.25),
-                      blurRadius: 20,
-                      spreadRadius: 5,
-                      offset: const Offset(0, 5), // Position of the shadow
-                    )
-                  ],
-                ),
-              ),
-            ),
-            // Glassmorphism effect with blur and transparency
-            ClipRRect(
-              borderRadius: BorderRadius.circular(30.0),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(
-                    sigmaX: 15.0,
-                    sigmaY: 15.0), // Stronger blur for the glass effect
-                child: Container(
-                  height: 70,
-                  decoration: BoxDecoration(
-                    color: Colors.white
-                        .withOpacity(0.1), // Adjust the transparency here
-                    borderRadius: BorderRadius.circular(30.0),
-                    border: Border.all(
-                      color: Colors.white
-                          .withOpacity(0.2), // Border for the glassy look
-                      width: 1.5,
-                    ),
-                  ),
-                  child: BottomNavigationBar(
-                    type: BottomNavigationBarType.fixed,
-                    backgroundColor: Colors.transparent, // Set to transparent
-                    elevation: 0, // No shadow from the BottomNavigationBar
-                    items: const <BottomNavigationBarItem>[
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.home),
-                        label: 'Home',
-                        // backgroundColor: Color(0xFF1EFEBB) // No label
-                      ),
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.search),
-                        label: 'Search', // No label
-                      ),
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.chat),
-                        label: 'Chatbot', // No label
-                      ),
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.favorite),
-                        label: 'Likes', // No label
-                      ),
-                    ],
-                    currentIndex: _selectedIndex,
-                    selectedItemColor: Colors.white,
-                    unselectedItemColor: Colors.grey,
-                    onTap: _onItemTapped,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 18, 17, 17),
         title: const Text("Liked Attractions",

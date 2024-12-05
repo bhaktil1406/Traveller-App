@@ -34,7 +34,9 @@ class _GroupListPageState extends State<GroupListPage> {
       } else if (_selectedIndex == 2) {
         Navigator.pushReplacementNamed(context, 'GroupListPage');
       } else if (_selectedIndex == 3) {
-        Navigator.pushReplacementNamed(context, 'liked');
+        Navigator.pushReplacementNamed(context, 'itinerary');
+      } else if (_selectedIndex == 4) {
+        Navigator.pushReplacementNamed(context, 'FeedPage');
       }
     });
   }
@@ -105,12 +107,16 @@ class _GroupListPageState extends State<GroupListPage> {
                           label: 'Search', // No label
                         ),
                         BottomNavigationBarItem(
-                          icon: Icon(Icons.chat),
-                          label: 'Chatbot', // No label
+                          icon: Icon(Icons.group),
+                          label: 'Groups', // No label
                         ),
                         BottomNavigationBarItem(
-                          icon: Icon(Icons.favorite),
-                          label: 'Likes', // No label
+                          icon: Icon(Icons.line_style_outlined),
+                          label: 'AI Itinerary', // No label
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.article_rounded),
+                          label: 'Feed', // No label
                         ),
                       ],
                       currentIndex: _selectedIndex,

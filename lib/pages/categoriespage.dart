@@ -6,7 +6,8 @@ import 'package:tourist_app/pages/AttractionPage.dart';
 class CategoryPage extends StatefulWidget {
   final int categoryId;
   final String label;
-  const CategoryPage({required this.label, required this.categoryId, super.key});
+  const CategoryPage(
+      {required this.label, required this.categoryId, super.key});
 
   @override
   _CategoryPageState createState() => _CategoryPageState();
@@ -54,7 +55,7 @@ class _CategoryPageState extends State<CategoryPage> {
   Widget _buildAttrCard(
       int id, String name, String imagePath, String city, String state) {
     return Container(
-      height: 300,
+      height: 310,
       width: double.infinity, // Make sure the width fills the container
       margin: const EdgeInsets.symmetric(
           vertical: 10), // Add vertical spacing between cards
@@ -107,7 +108,6 @@ class _CategoryPageState extends State<CategoryPage> {
                   ),
                 ),
                 const SizedBox(width: 50),
-                
               ],
             ),
           ),
@@ -134,8 +134,7 @@ class _CategoryPageState extends State<CategoryPage> {
       backgroundColor: const Color.fromARGB(255, 18, 17, 17),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 18, 17, 17),
-        title: Text(widget.label,
-            style: const TextStyle(color: Colors.white)),
+        title: Text(widget.label, style: const TextStyle(color: Colors.white)),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: isLoading

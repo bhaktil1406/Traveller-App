@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tourist_app/chat/GropListPage.dart';
-import 'package:tourist_app/chat/feed.dart';
+import 'package:tourist_app/pages/FeedPage.dart';
 import 'package:tourist_app/chatbot.dart';
 import 'package:tourist_app/pages/Homepage2.dart';
 import 'package:tourist_app/pages/iternery.dart';
@@ -40,13 +40,14 @@ class MyApp extends StatelessWidget {
         'register': (context) => const register(),
         'home': (context) => const Homepage2(),
         // 'category': (context) => const CategoryPage(),
+        'itinerary': (context) => VacationInputScreen(),
         'search': (context) => const SearchPage(),
         'loginpage': (context) => const loginpage(),
         'chatbot': (context) => const chatbot(),
         'liked': (context) => const LikedPage(),
         'profile': (context) => const Profilepage(),
         'GroupListPage': (context) => const GroupListPage(),
-        'feed': (context) => FeedPage(),
+        'FeedPage': (context) => FeedPage(),
       },
     );
   }
