@@ -71,7 +71,7 @@ class _VacationInputScreenState extends State<VacationInputScreen> {
         "Give an itinerary for ${destination} destination for ${days} days for ${vacationType} trip";
 
     final url = Uri.parse(
-        'https://ae56-2409-40c1-4010-4fc4-e111-b9ea-46c-4a26.ngrok-free.app/itinerary');
+        'https://oriented-termite-leading.ngrok-free.app/itinerary');
     try {
       final response = await http.post(
         url,
